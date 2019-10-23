@@ -11,7 +11,7 @@ objects = loader.o kernel.o
 	#run g++ with params, output should be target file ($@), and compile input file ($<)
 	g++ $(GPPPARAMS) -o $@ -c $<
 
-$.o: $.s
+%.o: %.s
 	as $(ASPARAMS) -o $@ $<
 
 # at the end create mykernel.bin
