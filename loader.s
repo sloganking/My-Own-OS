@@ -14,6 +14,9 @@
 # set stack pointer (boot loader didn't set it)
 .section .text
 .extern kernelMain  #tell assembler that there is going to be something called kernelMain
+
+# tell "loader.s" there is a function called callConstructors
+.extern callConstructors
 .global loader
 
 # program entry point
@@ -21,6 +24,8 @@ loader:
     # set stack pointer
     # $esp = stack pointer
     mov $kernel_stack, %esp
+
+    call callConstructors
 
     # get pointer to info from bootloader and stores in kernel stack
     push %eax
