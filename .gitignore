@@ -3,3 +3,6 @@
 
 # compiled files
 *.bin
+
+# iso boot directory
+iso/
