@@ -26,3 +26,28 @@ mykernel.bin: linker.ld $(objects)
 # once mykernel.bin is complete, we want to install it
 install: mykernel.bin
 	sudo cp $< /boot/mykernel.bin
+
+
+# create mykernel.iso which will depend on mykernel.bin
+mykernel.iso: mykernel.bin
+
+	# create directory structure of resulting CD
+	mkdir iso
+	mkdir iso/boot
+	mkdir iso/boot/grub
+
+	# copy kernel into boot dir
+		cp $< iso/boot/
+
+	#create grub cfg manually
+		# don't wait for user to select entry (since there is only one)
+			echo 'set timeout=0' >> iso/boot/grub/grub.cfg
+
+		# one entry so set it as default
+			echo 'set default=0' >> iso/boot/grub/grub.cfg
+
+		# do other thing
+			echo 'menuentry "My Operating System' >> iso/boot/grub/grub.cfg
+			echo ' multiboot /boot/mykernel.bin' >> iso/boot/grub/grub.cfg
+			echo ' boot' >> iso/boot/grub/grub.cfg
+			echo '}' >> iso/boot/grub/grub.cfg
