@@ -56,3 +56,9 @@ mykernel.iso: mykernel.bin
 			grub-mkrescue --output=$@ iso
 		# delete no longer used iso directory
 			rm -rf iso
+
+# start instance of virtualbox running this OS
+# not yet working
+run: mykernel.iso
+	(killall VirtualBox && sleep 1) || true
+	VirtualBox --startvm "My OS" &
