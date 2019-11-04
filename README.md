@@ -10,6 +10,8 @@
 
 ``libisoburn``
 
+``mtools`` pacman -S mtools
+
 # Compiling
 
 ``make mykernel.bin``
