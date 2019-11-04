@@ -50,3 +50,9 @@ mykernel.iso: mykernel.bin
 		echo ' multiboot /boot/mykernel.bin' >> iso/boot/grub/grub.cfg
 		echo ' boot' >> iso/boot/grub/grub.cfg
 		echo '}' >> iso/boot/grub/grub.cfg
+
+	# create CD image
+		# make image using iso directory
+			grub-mkrescue --output=$@ iso
+		# delete no longer used iso directory
+			rm -rf iso

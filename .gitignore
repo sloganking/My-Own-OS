@@ -6,3 +6,6 @@
 
 # iso boot directory
 iso/
+
+# iso files
+*.iso
