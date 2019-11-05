@@ -1,4 +1,5 @@
 #include "types.h"
+#include "gdt.h"
 
 void printf(char* str){
     // pointer to memory location
@@ -27,6 +28,8 @@ extern "C" void callConstructors()
 //paramaters are data retrieved from bootloader
 extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     printf("Hello World!");
+
+    GlobalDescriptorTable gdt;
 
     while(1);   // so that the kernel doesn't stop
 }
