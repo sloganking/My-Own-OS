@@ -9,7 +9,7 @@ objects = loader.o gdt.o kernel.o
 #to create .o file from .cpp file
 %.o: %.cpp
 	#run g++ with params, output should be target file ($@), and compile input file ($<)
-	g++ $(GPPPARAMS) -o $@ -c $<
+	gcc $(GPPPARAMS) -c -o $@ $<
 
 %.o: %.s
 	as $(ASPARAMS) -o $@ $<
