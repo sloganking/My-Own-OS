@@ -9,7 +9,7 @@ unusedSegmentSelector(0,0,0),
 // contains 64 MB
 // flag details at "lowlevel.edu" in article about global descriptor table
 codeSegmentSelector(0,64*1024*1024, 0x9A),
-dataSegmentSelector(0,64*1024*1024, 0x9A)
+dataSegmentSelector(0,64*1024*1024, 0x92)
 {
     uint32_t i[2];
     i[0] = (uint32_t)this;
