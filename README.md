@@ -14,4 +14,4 @@
 
 # Compiling
 
-``make mykernel.bin``
+``make mykernel.iso``
