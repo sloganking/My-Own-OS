@@ -4,13 +4,21 @@
 
 # Requirements 
 
+## On Debian Systems
+
 ``g++``
 ``binutils``
 ``libc6-dev-i386``
+``grub-legacy``
+``xorriso``
 
+## On Arch Systems
+
+``g++``
+``binutils``
+``libc6-dev-i386``
 ``libisoburn``
-
-``mtools`` pacman -S mtools
+``mtools``
 
 # Compiling
 
