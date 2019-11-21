@@ -4,7 +4,7 @@
 
 # Requirements 
 
-## On Debian Systems
+## On Debian Based Systems
 
 ``g++``
 ``binutils``
@@ -12,7 +12,7 @@
 ``grub-legacy``
 ``xorriso``
 
-## On Arch Systems
+## On Arch Based Systems
 
 ``g++``
 ``binutils``
