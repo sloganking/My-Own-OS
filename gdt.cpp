@@ -1,5 +1,9 @@
 #include "gdt.h"
 
+uint32_t __stack_chk_fail_local(){
+    return 0;
+}
+
 //contructor
 GlobalDescriptorTable::GlobalDescriptorTable()
 : nullSegmentSelector(0,0,0),
