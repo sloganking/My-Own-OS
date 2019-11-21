@@ -1,4 +1,8 @@
-GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore
+#CFLAGS +=  -fno-stack-protector
+
+#CFLAGS= -fno-stack-protector -fno-stack-protector-all
+
+GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -fno-stack-protector
 # 32 bit
 ASPARAMS = --32
 LDPARAMS = -melf_i386
