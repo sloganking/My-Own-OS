@@ -24,18 +24,18 @@ void InterruptManager::SetInterruptDescriptorTableEntry(
 
 //constructor
 InterruptManager::InterruptManager(GlobalDescriptorTable* gdt){
-    uint16_t CodeSegment = gdt->codeSegmentSelector();
+    uint16_t CodeSegment = gdt->CodeSegmentSelector();
     const uint8_t IDT_INTERRUPT_GATE = 0xE;
 
     for(uint16_t i = 0; i < 256; i++){
-        SetInterruptDescriptorTableEntry(i, CodeSegment, &IgnoreInterruptRequest, 0, IDT_INTERRUPT_GATE)
+        SetInterruptDescriptorTableEntry(i, CodeSegment, &IgnoreInterruptRequest, 0, IDT_INTERRUPT_GATE);
     }
 
     //clock
-    SetInterruptDescriptorTableEntry(0x20, CodeSegment, &HandleInterruptRequest0x00, 0, IDT_INTERRUPT_GATE)
+    SetInterruptDescriptorTableEntry(0x20, CodeSegment, &HandleInterruptRequest0x00, 0, IDT_INTERRUPT_GATE);
 
     //keyboard
-    SetInterruptDescriptorTableEntry(0x21, CodeSegment, &HandleInterruptRequest0x01, 0, IDT_INTERRUPT_GATE)
+    SetInterruptDescriptorTableEntry(0x21, CodeSegment, &HandleInterruptRequest0x01, 0, IDT_INTERRUPT_GATE);
 
     //tell the processor to use the created IDT
     InterruptDescriptorTablePointer idt;
