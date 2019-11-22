@@ -15,19 +15,19 @@ class InterruptManager{
             uint16_t gdt_codeSegmentSelector;
             uint8_t reserved;
             uint8_t access;
-            uint16_t handlerAddressHighBits
+            uint16_t handlerAddressHighBits;
 
-        }   __attribute_((packed));
+        } __attribute__((packed));
 
         //for this structure,
         //create array with 256 entries
 
         static GateDescriptor interruptDescriptorTable[256];
 
-        struct interruptDescriptorTablePointer{
+        struct InterruptDescriptorTablePointer{
             uint16_t size;
             uint32_t base;  //address of table
-        } __attribute_((packed));
+        } __attribute__((packed));
 
         static void SetInterruptDescriptorTableEntry(
             uint8_t interruptNumber,
@@ -40,16 +40,18 @@ class InterruptManager{
     public:
 
         //constructor
-        InterruptManager(GlobalDDescriptorTable* gdt);
+        InterruptManager(GlobalDescriptorTable* gdt);
 
         //descructor
         ~InterruptManager();
 
+        void Activate();
+
         static uint32_t handleInterrupt(uint8_t interruptNumber, uint32_t esp);
 
         static void IgnoreInterruptRequest();
-        static void handleInterruptRequest0x00();   //timer
-        static void handleInterruptRequest0x01();   //keyboard
+        static void HandleInterruptRequest0x00();   //timer
+        static void HandleInterruptRequest0x01();   //keyboard
 };
 
 #endif

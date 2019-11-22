@@ -2,7 +2,7 @@
 
 void printf(char* str);
 
-InterruptManager::GateDescriptor InterruptManager::SetInterruptDescriptorTable[256];
+InterruptManager::GateDescriptor InterruptManager::interruptDescriptorTable[256];
 
 void InterruptManager::SetInterruptDescriptorTableEntry(
     uint8_t interruptNumber,
@@ -10,7 +10,7 @@ void InterruptManager::SetInterruptDescriptorTableEntry(
     void (*handler)(),      //pointer to handler
     uint8_t DescriptorPrivilegeLevel,
     uint8_t DescriptorType
-);
+)
 {
     const uint8_t IDT_DESC_PRESENT = 0x80;
 
@@ -23,12 +23,12 @@ void InterruptManager::SetInterruptDescriptorTableEntry(
 
 
 //constructor
-InterruptManager(GlobalDDescriptorTable* gdt){
+InterruptManager::InterruptManager(GlobalDescriptorTable* gdt){
     uint16_t CodeSegment = gdt->codeSegmentSelector();
     const uint8_t IDT_INTERRUPT_GATE = 0xE;
 
     for(uint16_t i = 0; i < 256; i++){
-        SetInterruptDescriptorTableEntry(i, CodeSegment, &InterruptIgnore, 0, IDT_INTERRUPT_GATE)
+        SetInterruptDescriptorTableEntry(i, CodeSegment, &IgnoreInterruptRequest, 0, IDT_INTERRUPT_GATE)
     }
 
     //clock
@@ -45,8 +45,12 @@ InterruptManager(GlobalDDescriptorTable* gdt){
 }
 
 //descructor
-~InterruptManager(){
+InterruptManager::~InterruptManager(){
     
+}
+
+void InterruptManager::Activate(){
+    asm("sti");
 }
 
 uint32_t InterruptManager::handleInterrupt(uint8_t interruptNumber, uint32_t esp){

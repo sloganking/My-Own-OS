@@ -1,5 +1,6 @@
 #include "types.h"
 #include "gdt.h"
+#include "interrupts.h"
 
 
 //screen 80 chars wide and 25 high
@@ -61,7 +62,11 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     printf("Hello World!\n");
     printf("This is my second string!");
 
-    GlobalDescriptorTable gdt;
+    GlobalDescriptorTable gdt;      //initialize Global Descriptor table
+
+    InterruptManager interrupts(&gdt);  //initialize Interrupt Descriptor table
+
+    interrupts.Activate();  //tell CPU to allow interrupts
 
     while(1);   // so that the kernel doesn't stop
 }
