@@ -23,7 +23,15 @@ void InterruptManager::SetInterruptDescriptorTableEntry(
 
 
 //constructor
-InterruptManager::InterruptManager(GlobalDescriptorTable* gdt){
+InterruptManager::InterruptManager(GlobalDescriptorTable* gdt)
+
+//instansiate ports, numbers are engrained in hardware
+: picMasterCommand(0x20),
+  picMasterData(0x21),
+  picSlaveCommand(0xA0),
+  picSlaveData(0xA1)
+
+{
     uint16_t CodeSegment = gdt->CodeSegmentSelector();
     const uint8_t IDT_INTERRUPT_GATE = 0xE;
 
@@ -36,6 +44,25 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt){
 
     //keyboard
     SetInterruptDescriptorTableEntry(0x21, CodeSegment, &HandleInterruptRequest0x01, 0, IDT_INTERRUPT_GATE);
+
+    picMasterCommand.Write(0x11);
+    picSlaveCommand.Write(0x11);
+
+    //have PICs add numbers to interupts so we can differentiate between them and exceptions
+    picMasterData.Write(0x20);
+    picSlaveData.Write(0x28);
+
+
+
+    //tell Master PIC it is master and Slave PIC it is the slave
+    picMasterData.Write(0x04);
+    picSlaveData.Write(0x02);
+
+    picMasterData.Write(0x01);
+    picSlaveData.Write(0x01);
+
+    picMasterData.Write(0x00);
+    picSlaveData.Write(0x00);
 
     //tell the processor to use the created IDT
     InterruptDescriptorTablePointer idt;

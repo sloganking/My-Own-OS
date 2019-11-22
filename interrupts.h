@@ -37,6 +37,12 @@ class InterruptManager{
             uint8_t DescriptorType
         );
 
+
+        Port8BitSlow picMasterCommand;
+        Port8BitSlow picMasterData;
+        Port8BitSlow picSlaveCommand;
+        Port8BitSlow picSlaveData;
+
     public:
 
         //constructor
