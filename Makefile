@@ -4,7 +4,7 @@ ASPARAMS = --32
 LDPARAMS = -melf_i386
 
 # object files
-objects = loader.o gdt.o kernel.o
+objects = loader.o gdt.o port.o kernel.o
 
 #to create .o file from .cpp file
 %.o: %.cpp
@@ -62,3 +62,9 @@ mykernel.iso: mykernel.bin
 run: mykernel.iso
 	(killall VirtualBox && sleep 1) || true
 	VirtualBox --startvm "My OS" &
+
+
+.PHONY: clean
+# deletes generated object files and mykernel.bin
+clean:
+	rm -f $(objects) mykernel.bin
