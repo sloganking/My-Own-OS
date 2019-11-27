@@ -35,7 +35,9 @@ void printf(char* str){
         if(y >= 25){
             //set whole screen to space character
             for(y = 0; y < 25; y++){
-                VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | ' ';
+                for(x = 0; x < 80; x++){
+                    VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | ' ';
+                }
             }
             x=0;
             y=0;
