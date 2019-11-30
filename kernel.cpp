@@ -62,7 +62,15 @@ extern "C" void callConstructors()
 //paramaters are data retrieved from bootloader
 extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     printf("Hello World!\n");
-    printf("This is my second string!");
+    printf("This is my second string!\n");
+    printf("This one is very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong\n");
+
+    // while(1){
+    //     for(uint32_t i=0; i<100000000; i++){        //wait some time
+    //         printf("");
+    //     }
+    //     printf("Count...\n");
+    // }
 
     GlobalDescriptorTable gdt;      //initialize Global Descriptor table
 
