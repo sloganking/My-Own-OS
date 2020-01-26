@@ -9,6 +9,9 @@ class InterruptManager{
 
     // interrupt descriptor table
     protected:
+
+        static InterruptManager* ActiveInterruptManager;
+
         struct GateDescriptor{
             uint16_t handlerAddressLowBits;
             //offset of GDT
@@ -52,8 +55,10 @@ class InterruptManager{
         ~InterruptManager();
 
         void Activate();
+        void Deactivate();
 
         static uint32_t handleInterrupt(uint8_t interruptNumber, uint32_t esp);
+        uint32_t DoHandleInterrupt(uint8_t interruptNumber, uint32_t esp);
 
         static void IgnoreInterruptRequest();
         static void HandleInterruptRequest0x00();   //timer
