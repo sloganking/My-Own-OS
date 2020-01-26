@@ -1,6 +1,7 @@
 #include "types.h"
 #include "gdt.h"
 #include "interrupts.h"
+#include "keyboard.h"
 
 
 //screen 80 chars wide and 25 high
@@ -73,8 +74,9 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     // }
 
     GlobalDescriptorTable gdt;      //initialize Global Descriptor table
-
     InterruptManager interrupts(&gdt);  //initialize Interrupt Descriptor table
+
+    KeyboardDriver keyboard(&interrupts);
 
     interrupts.Activate();  //tell CPU to allow interrupts
 

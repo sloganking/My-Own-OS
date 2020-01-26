@@ -4,7 +4,7 @@ ASPARAMS = --32
 LDPARAMS = -melf_i386
 
 # object files
-objects = loader.o gdt.o port.o interruptstubs.o interrupts.o kernel.o
+objects = loader.o gdt.o port.o interruptstubs.o interrupts.o keyboard.o kernel.o
 
 #to create .o file from .cpp file
 %.o: %.cpp
