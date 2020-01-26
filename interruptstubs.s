@@ -2,7 +2,7 @@
 
 .section .text
 
-.extern _ZN16InterruptManager15handleInterruptEhj   # compiler given name of InterruptManager::handleInterrupt function in "interrupts.cpp"
+.extern _ZN16InterruptManager15HandleInterruptEhj   # compiler given name of InterruptManager::handleInterrupt function in "interrupts.cpp"
 
 .global _ZN16InterruptManager22IgnoreInterruptRequestEv
 
@@ -39,7 +39,7 @@ int_bottom:
 
     pushl %esp
     push (interruptnumber)
-    call _ZN16InterruptManager15handleInterruptEhj
+    call _ZN16InterruptManager15HandleInterruptEhj
 
     # popOld pointer and interrupt number like this
     # addl $5, %esp
