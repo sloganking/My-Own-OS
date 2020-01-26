@@ -2,6 +2,23 @@
 
 void printf(char* str);
 
+//constructor
+InterruptHandler::InterruptHandler(uint8_t interruptNumber, InterruptManager* interruptManager){
+    this->interruptNumber = interruptNumber;
+    this->interruptManager = interruptManager;
+    interruptManager->handlers[interruptNumber] = this;
+}
+//destructor
+InterruptHandler::~InterruptHandler(){
+    if(interruptManager->handlers[interruptNumber] == this){
+        interruptManager->handlers[interruptNumber] = 0;
+    }
+}
+    
+uint32_t InterruptHandler::handleInterrupt(uint32_t esp){
+    return esp;
+}
+
 InterruptManager::GateDescriptor InterruptManager::interruptDescriptorTable[256];
 
 InterruptManager* InterruptManager::ActiveInterruptManager = 0;
@@ -38,6 +55,7 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt)
     const uint8_t IDT_INTERRUPT_GATE = 0xE;
 
     for(uint16_t i = 0; i < 256; i++){
+        handlers[i] = 0;
         SetInterruptDescriptorTableEntry(i, CodeSegment, &IgnoreInterruptRequest, 0, IDT_INTERRUPT_GATE);
     }
 
@@ -102,9 +120,20 @@ uint32_t InterruptManager::handleInterrupt(uint8_t interruptNumber, uint32_t esp
 
 uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t esp){
 
+    //if we have a handler for the interrupt number
+    if(handlers[interruptNumber] != 0){
+        //call it's handle interrupt method
+        esp = handlers[interruptNumber]->handleInterrupt(esp);
+    }
     //if not an interrupt from the clock
-    if(interruptNumber != 0x20){
-        printf(" INTERRUPT");
+    else if(interruptNumber != 0x20){
+
+        //print number of interrupt we didn't handle
+        char* foo = "UNHANDLED INTERRUPT 0x00";
+        char* hex = "0123456789ABCDF";
+        foo[22] = hex[(interruptNumber >> 4) & 0x0F];
+        foo[23] = hex[interruptNumber & 0x0F];
+        printf(foo);
     }
 
     //if it's a hardware interrupt
