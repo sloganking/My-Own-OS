@@ -4,7 +4,11 @@
 
 # Current Progress
 
-The OS compiles to .iso file and a basic printf() function has been implemented, allowing the kernel to print text to the screen. Enabling interupts is now being worked on.
+- The OS compiles to .iso file
+- implemented basic printf() function, allowing the kernel to print text to the screen. 
+- Enabled interupts
+
+Currentling working on implementing keyboard support
 
 ![](./Assets/kernelPrinting.gif)
 
