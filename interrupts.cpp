@@ -15,7 +15,7 @@ InterruptHandler::~InterruptHandler(){
     }
 }
     
-uint32_t InterruptHandler::handleInterrupt(uint32_t esp){
+uint32_t InterruptHandler::HandleInterrupt(uint32_t esp){
     return esp;
 }
 
@@ -111,7 +111,7 @@ void InterruptManager::Deactivate(){
     }
 }
 
-uint32_t InterruptManager::handleInterrupt(uint8_t interruptNumber, uint32_t esp){
+uint32_t InterruptManager::HandleInterrupt(uint8_t interruptNumber, uint32_t esp){
 
     if(ActiveInterruptManager != 0)
         return ActiveInterruptManager->DoHandleInterrupt(interruptNumber, esp);
@@ -123,7 +123,7 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t e
     //if we have a handler for the interrupt number
     if(handlers[interruptNumber] != 0){
         //call it's handle interrupt method
-        esp = handlers[interruptNumber]->handleInterrupt(esp);
+        esp = handlers[interruptNumber]->HandleInterrupt(esp);
     }
     //if not an interrupt from the clock
     else if(interruptNumber != 0x20){

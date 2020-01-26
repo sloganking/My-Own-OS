@@ -31,13 +31,13 @@ KeyboardDriver::~KeyboardDriver(){
 
 }
 
-uint32_t KeyboardDriver::handleInterrupt(uint32_t esp){
+uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp){
 
     //fetch the pressed key
     uint8_t key = dataport.Read();
 
     //print number of interrupt we didn't handle
-    char* foo = "KEYBOARD 0x00";
+    char* foo = "KEYBOARD 0x00 ";
     char* hex = "0123456789ABCDF";
     foo[11] = hex[(key >> 4) & 0x0F];
     foo[12] = hex[key & 0x0F];
