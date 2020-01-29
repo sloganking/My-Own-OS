@@ -65,6 +65,9 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt)
     //keyboard
     SetInterruptDescriptorTableEntry(0x21, CodeSegment, &HandleInterruptRequest0x01, 0, IDT_INTERRUPT_GATE);
 
+    //mouse
+    SetInterruptDescriptorTableEntry(0x2C, CodeSegment, &HandleInterruptRequest0x01, 0, IDT_INTERRUPT_GATE);
+
     picMasterCommand.Write(0x11);
     picSlaveCommand.Write(0x11);
 
@@ -112,6 +115,15 @@ void InterruptManager::Deactivate(){
 }
 
 uint32_t InterruptManager::HandleInterrupt(uint8_t interruptNumber, uint32_t esp){
+
+    if(interruptNumber != 0x20){
+        //print number of interrupt we didn't handle
+        char* foo = "interrupt: 0x00 ";
+        char* hex = "0123456789ABCDF";
+        foo[13] = hex[(interruptNumber >> 4) & 0x0F];
+        foo[14] = hex[interruptNumber & 0x0F];
+        printf(foo);
+    }
 
     if(ActiveInterruptManager != 0)
         return ActiveInterruptManager->DoHandleInterrupt(interruptNumber, esp);

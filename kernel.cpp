@@ -2,6 +2,7 @@
 #include "gdt.h"
 #include "interrupts.h"
 #include "keyboard.h"
+#include "mouse.h"
 
 
 //screen 80 chars wide and 25 high
@@ -77,6 +78,7 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     InterruptManager interrupts(&gdt);  //initialize Interrupt Descriptor table
 
     KeyboardDriver keyboard(&interrupts);
+    MouseDriver mouse(&interrupts);
 
     interrupts.Activate();  //tell CPU to allow interrupts
 
