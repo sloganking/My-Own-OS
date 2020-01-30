@@ -33,8 +33,6 @@ KeyboardDriver::~KeyboardDriver(){
 
 uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp){
 
-    printf("Keyboard Interrupt: ");
-
     //fetch the pressed key
     uint8_t key = dataport.Read();
 
