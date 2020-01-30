@@ -8,8 +8,7 @@
 - implemented basic printf() function, allowing the kernel to print text to the screen. 
 - Enabled interupts
 - implemented keyboard support
-
-Currentling working on implementing mouse support
+- implemented mouse support
 
 ![](./Assets/kernelPrinting.gif)
 
