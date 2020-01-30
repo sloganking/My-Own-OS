@@ -66,7 +66,7 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt)
     SetInterruptDescriptorTableEntry(0x21, CodeSegment, &HandleInterruptRequest0x01, 0, IDT_INTERRUPT_GATE);
 
     //mouse
-    SetInterruptDescriptorTableEntry(0x2C, CodeSegment, &HandleInterruptRequest0x01, 0, IDT_INTERRUPT_GATE);
+    SetInterruptDescriptorTableEntry(0x2C, CodeSegment, &HandleInterruptRequest0x0C, 0, IDT_INTERRUPT_GATE);
 
     picMasterCommand.Write(0x11);
     picSlaveCommand.Write(0x11);

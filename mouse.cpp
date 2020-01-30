@@ -18,7 +18,7 @@ commandport(0x64)
     //at the start flip the character in center of screen (represents mouse)
     VideoMemory[80*12+40] = ((VideoMemory[80*12+40] & 0xF000) >> 4)
                             | ((VideoMemory[80*12+40] & 0x0F00) << 4)
-                            | (VideoMemory[80*12+40] & 0x0F00);
+                            | (VideoMemory[80*12+40] & 0x00FF);
 
     commandport.Write(0xA8); // activate interrupts
     commandport.Write(0x20); // get current state of PIC
@@ -37,8 +37,6 @@ MouseDriver::~MouseDriver(){
 }
 
 uint32_t MouseDriver::HandleInterrupt(uint32_t esp){
-
-    printf("Mouse Interrupt! ");
     
     uint8_t status = commandport.Read();
     if(!(status & 0x20)){   //test wether there is data
@@ -58,7 +56,7 @@ uint32_t MouseDriver::HandleInterrupt(uint32_t esp){
         //invert colors of old cursor position back to normal
         VideoMemory[80*y+x] = ((VideoMemory[80*y+x] & 0xF000) >> 4)
                             | ((VideoMemory[80*y+x] & 0x0F00) << 4)
-                            | (VideoMemory[80*y+x] & 0x0F00);
+                            | (VideoMemory[80*y+x] & 0x00FF);
 
         //buff 1 == movement on x axis
         x += buffer[1];
@@ -73,12 +71,8 @@ uint32_t MouseDriver::HandleInterrupt(uint32_t esp){
         //invert colors at new cursor position
         VideoMemory[80*y+x] = ((VideoMemory[80*y+x] & 0xF000) >> 4)
                             | ((VideoMemory[80*y+x] & 0x0F00) << 4)
-                            | (VideoMemory[80*y+x] & 0x0F00);
+                            | (VideoMemory[80*y+x] & 0x00FF);
     }
-
-    //fetch the pressed key
-    uint8_t key = dataport.Read();
-
 
     return esp;
 }
