@@ -10,6 +10,15 @@ KeyboardDriver::KeyboardDriver(InterruptManager* manager)
 dataport(0x60),
 commandport(0x64)
 {
+
+}
+
+//destructor
+KeyboardDriver::~KeyboardDriver(){
+
+}
+
+void KeyboardDriver::Activate(){
     //send multiple key presses while key is held down
     while(commandport.Read() & 0x1)
         dataport.Read();
@@ -24,11 +33,6 @@ commandport(0x64)
     dataport.Write(status);
 
     dataport.Write(0xF4); // activate keyboard
-}
-
-//destructor
-KeyboardDriver::~KeyboardDriver(){
-
 }
 
 uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp){

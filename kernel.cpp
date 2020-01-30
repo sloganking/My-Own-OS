@@ -1,6 +1,7 @@
 #include "types.h"
 #include "gdt.h"
 #include "interrupts.h"
+#include "driver.h"
 #include "keyboard.h"
 #include "mouse.h"
 
@@ -64,9 +65,7 @@ extern "C" void callConstructors()
 //paramaters are data retrieved from bootloader
 extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     printf("Hello World!\n");
-    printf("This is my second string!\n");
-    printf("This one is very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong\n");
-
+    
     // while(1){
     //     for(uint32_t i=0; i<100000000; i++){        //wait some time
     //         printf("");
@@ -77,9 +76,21 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     GlobalDescriptorTable gdt;      //initialize Global Descriptor table
     InterruptManager interrupts(&gdt);  //initialize Interrupt Descriptor table
 
+    printf("Initializing Hardware, Stage 1\n");
+    
+    DriverManager drvManager;
+    
     KeyboardDriver keyboard(&interrupts);
+    drvManager.AddDriver(&keyboard);
+    
     MouseDriver mouse(&interrupts);
+    drvManager.AddDriver(&mouse);
 
+    printf("Initializing Hardware, Stage 2\n");
+    drvManager.ActivateAll();
+
+
+    printf("Initializing Hardware, Stage 3\n");
     interrupts.Activate();  //tell CPU to allow interrupts
 
     while(1);   // so that the kernel doesn't stop
