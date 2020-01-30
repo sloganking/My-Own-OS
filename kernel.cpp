@@ -48,6 +48,14 @@ void printf(char* str){
     }
 }
 
+void printfHex(uint8_t key){
+    char* foo = "00 ";
+    char* hex = "0123456789ABCDF";
+    foo[0] = hex[(key >> 4) & 0x0F];
+    foo[1] = hex[key & 0x0F];
+    printf(foo);
+}
+
 // define what constructor means
 typedef void (*constructor)();
 extern "C" constructor start_ctors;

@@ -3,6 +3,7 @@
 //forward declaration of printf
 //so that we can use printf
 void printf(char*);
+void printfHex(uint8_t);
 
 //constructor
 KeyboardDriver::KeyboardDriver(InterruptManager* manager)
@@ -105,12 +106,9 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp){
 
             //anything above 0x80 signifies a key lift. we will ignore those for now
             if(key < 0x80){
-                //print number of interrupt we didn't handle
-                char* foo = "KEY 0x00 ";
-                char* hex = "0123456789ABCDF";
-                foo[6] = hex[(key >> 4) & 0x0F];
-                foo[7] = hex[key & 0x0F];
-                printf(foo);
+
+                printf("KEY: 0x");
+                printfHex(key);
             }
     }
 
