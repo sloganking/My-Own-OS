@@ -26,6 +26,7 @@ _ZN16InterruptManager26HandleInterruptRequest\num\()Ev:
 # for more interupts, add more numbers
 handleInterruptRequest 0x00
 handleInterruptRequest 0x01
+handleInterruptRequest 0x0C
 
 
 int_bottom:
