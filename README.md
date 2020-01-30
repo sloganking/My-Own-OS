@@ -10,7 +10,7 @@
 - implemented keyboard support
 - implemented mouse support
 
-![](./Assets/kernelPrinting.gif)
+![](./Assets/demo.gif)
 
 # Requirements 
 
