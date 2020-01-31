@@ -33,3 +33,18 @@
 # Compiling
 
 ``make mykernel.iso``
+
+# Possible Issues and Solutions
+
+## undefined reference to `__stack_chk_fail_local'
+When compiling, GCC may give the error ``gdt.cpp:(.text+0xa2): undefined reference to `__stack_chk_fail_local'``. If this happens, create function ``__stack_chk_fail_local()`` inside the file GCC says it can't find it in. Keep in mind that there should only be one of these functions, so if it's already implemented somewhere else you will have to move it.
+
+### Example of implemented function:
+
+```C++
+uint32_t __stack_chk_fail_local(){
+    return 0;
+}
+```
+
+
