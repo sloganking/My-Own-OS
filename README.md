@@ -46,5 +46,5 @@ uint32_t __stack_chk_fail_local(){
     return 0;
 }
 ```
-
+Further information about this issue has been [discussed in another repository](https://github.com/AlgorithMan-de/wyoos/issues/15)
 
