@@ -65,6 +65,54 @@ class PrintfKeyboardEventHandler : public KeyboardEventHandler{
         }
 };
 
+void invertCharAt(uint8_t x, uint8_t y){
+
+    uint16_t* VideoMemory = (uint16_t*)0xb8000;
+
+    VideoMemory[80*y+x] = ((VideoMemory[80*y+x] & 0xF000) >> 4)
+                            | ((VideoMemory[80*y+x] & 0x0F00) << 4)
+                            | (VideoMemory[80*y+x] & 0x00FF);
+}
+
+class MouseToConsole : public MouseEventHandler {
+
+    int8_t x,y;
+
+public:
+
+    MouseToConsole(){
+
+    }
+
+    virtual void OnActivate(){
+        //at the start flip the character in center of screen (represents mouse)
+        x = 40;
+        y = 12;
+        invertCharAt(40,12);
+    }
+
+    void OnMouseMove(int xoffset, int yoffset){
+
+
+        //invert colors of old cursor position back to normal
+        invertCharAt(x,y);
+
+        //buff 1 == movement on x axis
+        x += xoffset;
+
+        if(x < 0) x = 0;
+        if(x >= 80) x = 79;
+
+        y += yoffset;
+        if(y < 0) y = 0;
+        if(y >= 25) y = 24;
+
+        //invert colors at new cursor position
+        invertCharAt(x,y);
+
+    }
+};
+
 // define what constructor means
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -101,7 +149,8 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
         KeyboardDriver keyboard(&interrupts, &kbhandler);
         drvManager.AddDriver(&keyboard);
         
-        MouseDriver mouse(&interrupts);
+        MouseToConsole mousehandler;
+        MouseDriver mouse(&interrupts, &mousehandler);
         drvManager.AddDriver(&mouse);
 
         printf("Initializing Hardware, Stage 2\n");
