@@ -2,21 +2,21 @@
 
 .section .text
 
-.extern _ZN16InterruptManager15HandleInterruptEhj   # compiler given name of InterruptManager::handleInterrupt function in "interrupts.cpp"
+.extern _ZN4myos21hardwarecommunication16InterruptManager15HandleInterruptEhj   # compiler given name of InterruptManager::handleInterrupt function in "interrupts.cpp"
 
-.global _ZN16InterruptManager22IgnoreInterruptRequestEv
+.global _ZN4myos21hardwarecommunication16InterruptManager22IgnoreInterruptRequestEv
 
 .macro HandleException num
-.global _ZN16InterruptManager16HandleException\num\()Ev
-_ZN16InterruptManager16HandleException\num\()Ev:
+.global _ZN4myos21hardwarecommunication16InterruptManager16HandleException\num\()Ev
+_ZN4myos21hardwarecommunication16InterruptManager16HandleException\num\()Ev:
 
     movb $\num, (interruptnumber)
     jmp int_bottom
 .endm
 
 .macro HandleInterruptRequest num
-.global _ZN16InterruptManager26HandleInterruptRequest\num\()Ev
-_ZN16InterruptManager26HandleInterruptRequest\num\()Ev:
+.global _ZN4myos21hardwarecommunication16InterruptManager26HandleInterruptRequest\num\()Ev
+_ZN4myos21hardwarecommunication16InterruptManager26HandleInterruptRequest\num\()Ev:
 
     movb $\num + IRQ_BASE, (interruptnumber)
     jmp int_bottom
@@ -40,7 +40,7 @@ int_bottom:
 
     pushl %esp
     push (interruptnumber)
-    call _ZN16InterruptManager15HandleInterruptEhj
+    call _ZN4myos21hardwarecommunication16InterruptManager15HandleInterruptEhj
 
     # popOld pointer and interrupt number like this
     # addl $5, %esp
@@ -56,7 +56,7 @@ int_bottom:
     popl %ds
     popa
 
-_ZN16InterruptManager22IgnoreInterruptRequestEv:
+_ZN4myos21hardwarecommunication16InterruptManager22IgnoreInterruptRequestEv:
 
     iret # tell the processor we are done with interrupt
 

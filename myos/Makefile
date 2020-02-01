@@ -1,17 +1,29 @@
-GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -fno-stack-protector -Wno-write-strings
+GPPPARAMS = -m32 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -fno-stack-protector -Wno-write-strings
 # 32 bit
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
 # object files
-objects = loader.o gdt.o driver.o port.o interruptstubs.o interrupts.o keyboard.o mouse.o kernel.o
+objects = 	obj/loader.o \
+			obj/gdt.o \
+			obj/drivers/driver.o \
+			obj/hardwarecommunication/port.o \
+			obj/hardwarecommunication/interruptstubs.o \
+			obj/hardwarecommunication/interrupts.o \
+			obj/drivers/keyboard.o \
+			obj/drivers/mouse.o \
+			obj/kernel.o
 
 #to create .o file from .cpp file
-%.o: %.cpp
+obj/%.o: src/%.cpp
+	#make /obj directory if it doesn't exist
+	mkdir -p $(@D)
 	#run g++ with params, output should be target file ($@), and compile input file ($<)
 	gcc $(GPPPARAMS) -c -o $@ $<
 
-%.o: %.s
+obj/%.o: src/%.s
+	#make /obj directory if it doesn't exist
+	mkdir -p $(@D)
 	as $(ASPARAMS) -o $@ $<
 
 # at the end create mykernel.bin
@@ -67,4 +79,5 @@ run: mykernel.iso
 .PHONY: clean
 # deletes generated object files and mykernel.bin
 clean:
-	rm -f $(objects) mykernel.bin
+	#delete the /obj directory
+	rm -rf obj mykernel.bin

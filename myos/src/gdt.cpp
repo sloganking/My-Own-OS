@@ -1,4 +1,7 @@
-#include "gdt.h"
+#include <gdt.h>
+
+using namespace myos;
+using namespace myos::common;
 
 uint32_t __stack_chk_fail_local(){
     return 0;

@@ -1,4 +1,8 @@
-#include "keyboard.h"
+#include <drivers/keyboard.h>
+
+using namespace myos::common;
+using namespace myos::drivers;
+using namespace myos::hardwarecommunication;
 
 //forward declaration of printf
 //so that we can use printf
@@ -6,7 +10,7 @@ void printf(char*);
 void printfHex(uint8_t);
 
 
-KeyboardEventHandler::KeyboardEventHandler(){
+KeyboardEventHandler::KeyboardEventHandler (){
 
 }
 
