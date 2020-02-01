@@ -6,12 +6,12 @@ LDPARAMS = -melf_i386
 # object files
 objects = 	obj/loader.o \
 			obj/gdt.o \
-			obj/driver.o \
-			obj/port.o \
-			obj/interruptstubs.o \
-			obj/interrupts.o \
-			obj/keyboard.o \
-			obj/mouse.o \
+			obj/drivers/driver.o \
+			obj/hardwarecommunication/port.o \
+			obj/hardwarecommunication/interruptstubs.o \
+			obj/hardwarecommunication/interrupts.o \
+			obj/drivers/keyboard.o \
+			obj/drivers/mouse.o \
 			obj/kernel.o
 
 #to create .o file from .cpp file

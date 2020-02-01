@@ -17,7 +17,7 @@ namespace myos{
                 Port8Bit(myos::common::uint16_t portnumber);  //constructor
                 ~Port8Bit();     //Destructor
                 virtual void Write(myos::common::uint8_t data);
-                virtual uint8_t Read();
+                virtual myos::common::uint8_t Read();
         };
 
         class Port8BitSlow : public Port8Bit{

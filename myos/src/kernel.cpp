@@ -1,4 +1,4 @@
-#include <comon/types.h>
+#include <common/types.h>
 #include <gdt.h>
 #include <hardwarecommunication/interrupts.h>
 #include <drivers/driver.h>
