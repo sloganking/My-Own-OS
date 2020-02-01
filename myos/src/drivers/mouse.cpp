@@ -1,4 +1,8 @@
-#include "mouse.h"
+#include <drivers/mouse.h>
+
+using namespace myos::common;
+using namespace myos::drivers;
+using namespace myos::hardwarecommunication;
 
 //forward declaration of printf
 //so that we can use printf
