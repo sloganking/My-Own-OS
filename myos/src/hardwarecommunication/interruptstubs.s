@@ -38,8 +38,10 @@ int_bottom:
     pushl %fs
     pushl %gs
 
+    # pass function arguments
     pushl %esp
     push (interruptnumber)
+
     call _ZN4myos21hardwarecommunication16InterruptManager15HandleInterruptEhj
 
     # popOld pointer and interrupt number like this
@@ -58,7 +60,8 @@ int_bottom:
 
 _ZN4myos21hardwarecommunication16InterruptManager22IgnoreInterruptRequestEv:
 
-    iret # tell the processor we are done with interrupt
+    # tell the processor we are done with interrupt
+    iret
 
 
 .data 
