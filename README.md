@@ -4,11 +4,17 @@
 
 # Current Progress
 
+### Completed
+
 - The OS compiles to .iso file
 - implemented basic printf() function, allowing the kernel to print text to the screen. 
 - Enabled interupts
 - implemented keyboard support
 - implemented mouse support
+
+### Working On
+
+- Communicating with Peripheral Component Interconnect (PCI) Devices
 
 ![](./Assets/demo.gif)
 
