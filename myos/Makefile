@@ -13,6 +13,7 @@ objects = 	obj/loader.o \
 			obj/hardwarecommunication/pci.o \
 			obj/drivers/keyboard.o \
 			obj/drivers/mouse.o \
+			obj/drivers/vga.o \
 			obj/kernel.o
 
 #to create .o file from .cpp file

@@ -82,7 +82,7 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt)
 
 
 
-    //tell Master PIC it is master and Slave PIC it is the slave
+    //tell Master PIC it is master, and Slave PIC it is the slave
     picMasterData.Write(0x04);
     picSlaveData.Write(0x02);
 
