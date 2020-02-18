@@ -91,11 +91,11 @@ void VideoGraphicsArray::WriteRegisters(uint8_t* registers){
         attributeControllerIndexPort.Write(0x20);
 }
 
-bool VideoGraphicsArray::SupportsMode(int32_t width, int32_t height, uint32_t colordepth){
+bool VideoGraphicsArray::SupportsMode(uint32_t width, uint32_t height, uint32_t colordepth){
     return width == 320 && height == 200 && colordepth == 8;
 }
 
-bool VideoGraphicsArray::SetMode(int32_t width, int32_t height, uint32_t colordepth){
+bool VideoGraphicsArray::SetMode(uint32_t width, uint32_t height, uint32_t colordepth){
 
     if(!SupportsMode(width, height, colordepth)){
         return false;
