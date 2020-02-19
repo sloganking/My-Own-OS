@@ -6,11 +6,12 @@ using namespace myos::gui;
 //class Widget
 
     //constructor
-    Widget(
+    Widget::Widget(
         Widget* parent, 
         int32_t x, int32_t y, int32_t w, int32_t h, 
         uint8_t r, uint8_t g, uint8_t b
     )
+    : KeyboardEventHandler()
     {
         this->parent = parent;
 
@@ -42,7 +43,7 @@ using namespace myos::gui;
         //all widgets will pass focus to parents untill a parent contains the functionality to deal with it
         //for example if you click a text box, tell the window containing that text box that it is in focus
         if(parent != 0){
-            parent->GetFocus(widget)
+            parent->GetFocus(widget);
         }
     }
 
@@ -69,7 +70,7 @@ using namespace myos::gui;
         gc->FillRectangle(X,Y,w,h, r,g,b);
     }
 
-    void Widget::OnMouseDown(int32_t x,  int32_t y){
+    void Widget::OnMouseDown(int32_t x,  int32_t y, uint8_t button){
         if(Focussable){
             GetFocus(this);
         }
@@ -81,19 +82,11 @@ using namespace myos::gui;
             && this->y <= y && y < this->y + this->h;
     }
 
-    void Widget::OnMouseUp(int32_t x,  int32_t y){
+    void Widget::OnMouseUp(int32_t x,  int32_t y, uint8_t button){
 
     }
 
     void Widget::OnMouseMove(int32_t oldx,  int32_t oldy, int32_t newx,  int32_t newy){
-
-    }
-
-    void Widget::OnKeyDown(char* str){
-
-    }
-
-    void Widget::OnKeyUp(char* str){
 
     }
 
@@ -105,6 +98,7 @@ using namespace myos::gui;
         int32_t x, int32_t y, int32_t w, int32_t h, 
         uint8_t r, uint8_t g, uint8_t b
     )
+    : Widget(parent, x,y,w,h, r,g,b)
     {
         focussedChild = 0;
         numChildren = 0;
@@ -116,10 +110,18 @@ using namespace myos::gui;
     }
 
     void CompositeWidget::GetFocus(Widget* widget){
-        this->focussedChild = widger;
+        this->focussedChild = widget;
         if(parent != 0){
             parent->GetFocus(this);
         }
+    }
+
+    bool CompositeWidget::AddChild(Widget* child){
+        if(numChildren >= 100){
+            return false;
+        }
+        children[numChildren++] = child;
+        return true;
     }
 
     void CompositeWidget::Draw(GraphicsContext* gc){
@@ -134,10 +136,10 @@ using namespace myos::gui;
 
     //iterate through children and pass event to the child that contains the coorinate
     //pass the click to the one that has been clicked
-    void CompositeWidget::OnMouseDown(int32_t x,  int32_t y){
+    void CompositeWidget::OnMouseDown(int32_t x,  int32_t y, uint8_t button){
         for(int i = 0; i < numChildren; ++i){
             if(children[i]->ContainsCoordinate(x - this->x, y - this->y)){
-                children[i]->OnMouseDown(x - this->x, y - this->y);
+                children[i]->OnMouseDown(x - this->x, y - this->y, button);
 
                 //only the top window is clicked on
                 break;
@@ -147,10 +149,10 @@ using namespace myos::gui;
 
     //iterate through children and pass event to the child that contains the coorinate
     //pass the click to the one that has been clicked
-    void CompositeWidget::OnMouseUp(int32_t x,  int32_t y){
+    void CompositeWidget::OnMouseUp(int32_t x,  int32_t y, uint8_t button){
         for(int i = 0; i < numChildren; ++i){
             if(children[i]->ContainsCoordinate(x - this->x, y - this->y)){
-                children[i]->OnMouseUp(x - this->x, y - this->y);
+                children[i]->OnMouseUp(x - this->x, y - this->y, button);
 
                 //only the top window is clicked on
                 break;
@@ -191,13 +193,13 @@ using namespace myos::gui;
         }
     }
 
-    void CompositeWidget::OnKeyDown(char* str){
+    void CompositeWidget::OnKeyDown(char str){
         if(focussedChild != 0){
             focussedChild->OnKeyDown(str);
         }
     }
-    
-    void CompositeWidget::OnKeyUp(char* str){
+
+    void CompositeWidget::OnKeyUp(char str){
         if(focussedChild != 0){
             focussedChild->OnKeyUp(str);
         }

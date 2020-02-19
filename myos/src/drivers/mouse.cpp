@@ -81,7 +81,7 @@ uint32_t MouseDriver::HandleInterrupt(uint32_t esp){
     if(offset == 0){
         //if mouse moved in X or Y axis
         if(buffer[1] != 0 || buffer[2] != 0){
-            handler->OnMouseMove(buffer[1], -buffer[2]);
+            handler->OnMouseMove((int)buffer[1], -((int)buffer[2]));
         }
 
         
