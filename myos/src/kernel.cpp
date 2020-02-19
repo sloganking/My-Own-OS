@@ -166,8 +166,10 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     printf("Initializing Hardware, Stage 3\n");
     interrupts.Activate();  //tell CPU to allow interrupts
 
-    //write blue pixels to entire screen
+    //screen resolution is 320 px wide, 200 px tall, using 8 bit pixel color depth
     vga.SetMode(320,200,8);
+
+    //write blue pixels to entire screen
     for(uint32_t y = 0; y < 200; y++){
         for(uint32_t x = 0; x < 320; x++){
             vga.PutPixel(x,y,0x00,0x00,0xA8);   //blue
