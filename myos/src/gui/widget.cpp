@@ -129,7 +129,7 @@ using namespace myos::gui;
         Widget::Draw(gc);
 
         //draw all children
-        for(int i = numChildren; i >= 0; --i){
+        for(int i = numChildren-1; i >= 0; --i){
             children[i]->Draw(gc);
         }
     }

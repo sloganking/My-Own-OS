@@ -6,11 +6,13 @@
 #include <drivers/keyboard.h> 
 #include <drivers/mouse.h>
 #include <drivers/vga.h>
+#include <gui/desktop.h>
 
 using namespace myos;
 using namespace myos::common;
 using namespace myos::drivers;
 using namespace myos::hardwarecommunication;
+using namespace myos::gui;
 
 
 
@@ -175,8 +177,8 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     //screen resolution is 320 px wide, 200 px tall, using 8 bit pixel color depth
     vga.SetMode(320,200,8);
 
-    //write blue pixels to entire screen
-    vga.FillRectangle(0,0,320,200,0x00,0x00,0xA8);
+    Desktop desktop(320,200, 0x00,0x00,0xA8);
+    desktop.Draw(&vga);
 
     while(1);   // so that the kernel doesn't stop
 }
