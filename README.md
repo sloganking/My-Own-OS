@@ -7,14 +7,16 @@
 ### Completed
 
 - The OS compiles to .iso file
-- implemented basic printf() function, allowing the kernel to print text to the screen. 
+- Implemented basic printf() function, allowing the kernel to print text to the screen. 
 - Enabled interupts
-- implemented keyboard support
-- implemented mouse support
+- Implemented keyboard support
+- Implemented mouse support
+- Established communicatiion with Peripheral Component Interconnect (PCI) Devices
+- Enabled VGA based graphical environment
 
 ### Working On
 
-- Communicating with Peripheral Component Interconnect (PCI) Devices
+- GUI framework for basic desktop and windows
 
 ![](./Assets/demo.gif)
 
