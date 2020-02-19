@@ -42,6 +42,7 @@ namespace myos{
                 //8 bit vga mode only has 256 colores. colorIndex selects which one to display
                 virtual void PutPixel(myos::common::uint32_t x, myos::common::uint32_t y, myos::common::uint32_t colorIndex);
 
+                virtual void FillRectangle(myos::common::uint32_t x, myos::common::uint32_t y, myos::common::uint32_t w, myos::common::uint32_t h, myos::common::uint8_t r, myos::common::uint8_t g, myos::common::uint8_t b);
         };
     }
 }

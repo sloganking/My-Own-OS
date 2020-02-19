@@ -170,11 +170,7 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     vga.SetMode(320,200,8);
 
     //write blue pixels to entire screen
-    for(uint32_t y = 0; y < 200; y++){
-        for(uint32_t x = 0; x < 320; x++){
-            vga.PutPixel(x,y,0x00,0x00,0xA8);   //blue
-        }
-    }
+    vga.FillRectangle(0,0,320,200,0x00,0x00,0xA8);
 
     while(1);   // so that the kernel doesn't stop
 }
