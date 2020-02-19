@@ -72,6 +72,13 @@ void Widget::OnMouseDown(int32_t x,  int32_t y){
         GetFocus(this);
     }
 }
+
+//check if x and y are larger than x and y coordinates of the widget, and smaller than the coordinates + width or height respectivly
+bool Widget::ContainsCoordinate(int32_t x, int32_t y){
+    return this->x <= x && x < this->x + this->w
+        && this->y <= y && y < this->y + this->h;
+}
+
 void Widget::OnMouseUp(int32_t x,  int32_t y){
 
 }
