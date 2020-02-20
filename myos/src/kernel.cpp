@@ -145,17 +145,21 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     InterruptManager interrupts(&gdt);  //initialize Interrupt Descriptor table
 
     printf("Initializing Hardware, Stage 1\n");
+
+    Desktop desktop(320,200, 0x00,0x00,0xA8);
     
     DriverManager drvManager;
 
         //initialize keyboard
-        PrintfKeyboardEventHandler kbhandler;
-        KeyboardDriver keyboard(&interrupts, &kbhandler);
+        // PrintfKeyboardEventHandler kbhandler;
+        // KeyboardDriver keyboard(&interrupts, &kbhandler);
+        KeyboardDriver keyboard(&interrupts, &desktop);
         drvManager.AddDriver(&keyboard);
         
         //initialize mouse
-        MouseToConsole mousehandler;
-        MouseDriver mouse(&interrupts, &mousehandler);
+        // MouseToConsole mousehandler;
+        // MouseDriver mouse(&interrupts, &mousehandler);
+        MouseDriver mouse(&interrupts, &desktop);
         drvManager.AddDriver(&mouse);
 
         //initialize PCI
@@ -171,14 +175,13 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
 
     printf("Initializing Hardware, Stage 3\n");
 
-    //tell CPU to allow interrupts
-    interrupts.Activate();
-
     //screen resolution is 320 px wide, 200 px tall, using 8 bit pixel color depth
     vga.SetMode(320,200,8);
 
-    Desktop desktop(320,200, 0x00,0x00,0xA8);
-    desktop.Draw(&vga);
+    //tell CPU to allow interrupts
+    interrupts.Activate();
 
-    while(1);   // so that the kernel doesn't stop
+    while(1){
+        desktop.Draw(&vga);
+    }
 }
