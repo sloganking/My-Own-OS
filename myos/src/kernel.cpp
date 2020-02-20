@@ -7,6 +7,7 @@
 #include <drivers/mouse.h>
 #include <drivers/vga.h>
 #include <gui/desktop.h>
+#include <gui/window.h>
 
 using namespace myos;
 using namespace myos::common;
@@ -177,6 +178,12 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
 
     //screen resolution is 320 px wide, 200 px tall, using 8 bit pixel color depth
     vga.SetMode(320,200,8);
+
+    //make new window and attach it to the desktop
+    Window win1(&desktop, 10,10, 20,20, 0xA8,0x00,0x00);
+    desktop.AddChild(&win1);
+    Window win2(&desktop, 40,15, 30,30, 0x00,0xA8,0x00);
+    desktop.AddChild(&win2);
 
     //tell CPU to allow interrupts
     interrupts.Activate();
