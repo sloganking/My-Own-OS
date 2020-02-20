@@ -13,10 +13,11 @@
 - Implemented mouse support
 - Established communicatiion with Peripheral Component Interconnect (PCI) Devices
 - Enabled VGA based graphical environment
+- GUI framework for basic desktop and windows
 
 ### Working On
 
-- GUI framework for basic desktop and windows
+- Multitasking
 
 ![](./Assets/demo.gif)
 
