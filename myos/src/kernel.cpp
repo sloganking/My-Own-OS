@@ -6,11 +6,14 @@
 #include <drivers/keyboard.h> 
 #include <drivers/mouse.h>
 #include <drivers/vga.h>
+#include <gui/desktop.h>
+#include <gui/window.h>
 
 using namespace myos;
 using namespace myos::common;
 using namespace myos::drivers;
 using namespace myos::hardwarecommunication;
+using namespace myos::gui;
 
 
 
@@ -143,20 +146,28 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     InterruptManager interrupts(&gdt);  //initialize Interrupt Descriptor table
 
     printf("Initializing Hardware, Stage 1\n");
+
+    Desktop desktop(320,200, 0x00,0x00,0xA8);
     
     DriverManager drvManager;
 
-        PrintfKeyboardEventHandler kbhandler;
-        KeyboardDriver keyboard(&interrupts, &kbhandler);
+        //initialize keyboard
+        // PrintfKeyboardEventHandler kbhandler;
+        // KeyboardDriver keyboard(&interrupts, &kbhandler);
+        KeyboardDriver keyboard(&interrupts, &desktop);
         drvManager.AddDriver(&keyboard);
         
-        MouseToConsole mousehandler;
-        MouseDriver mouse(&interrupts, &mousehandler);
+        //initialize mouse
+        // MouseToConsole mousehandler;
+        // MouseDriver mouse(&interrupts, &mousehandler);
+        MouseDriver mouse(&interrupts, &desktop);
         drvManager.AddDriver(&mouse);
 
+        //initialize PCI
         PeripheralComponentInterconnectController PCIController;
         PCIController.SelectDrivers(&drvManager, &interrupts);
 
+        //initialize VGA graphics
         VideoGraphicsArray vga;
 
     printf("Initializing Hardware, Stage 2\n");
@@ -164,13 +175,20 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
 
 
     printf("Initializing Hardware, Stage 3\n");
-    interrupts.Activate();  //tell CPU to allow interrupts
 
     //screen resolution is 320 px wide, 200 px tall, using 8 bit pixel color depth
     vga.SetMode(320,200,8);
 
-    //write blue pixels to entire screen
-    vga.FillRectangle(0,0,320,200,0x00,0x00,0xA8);
+    //make new window and attach it to the desktop
+    Window win1(&desktop, 10,10, 20,20, 0xA8,0x00,0x00);
+    desktop.AddChild(&win1);
+    Window win2(&desktop, 40,15, 30,30, 0x00,0xA8,0x00);
+    desktop.AddChild(&win2);
 
-    while(1);   // so that the kernel doesn't stop
+    //tell CPU to allow interrupts
+    interrupts.Activate();
+
+    while(1){
+        desktop.Draw(&vga);
+    }
 }

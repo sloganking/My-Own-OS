@@ -13,7 +13,9 @@
 
 # set stack pointer (boot loader didn't set it)
 .section .text
-.extern kernelMain  #tell assembler that there is going to be something called kernelMain
+
+# tell assembler that there is going to be something called kernelMain
+.extern kernelMain 
 
 # tell "loader.s" there is a function called callConstructors
 .extern callConstructors
