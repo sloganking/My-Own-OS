@@ -21,6 +21,8 @@
 
 ![](./Assets/demo.gif)
 
+![](./Assets/demo2.gif)
+
 # Requirements 
 
 ## On Debian Based Systems
