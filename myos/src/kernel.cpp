@@ -8,6 +8,7 @@
 #include <drivers/vga.h>
 #include <gui/desktop.h>
 #include <gui/window.h>
+#include <gui/render.h>
 
 using namespace myos;
 using namespace myos::common;
@@ -170,6 +171,9 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
         //initialize VGA graphics
         VideoGraphicsArray vga;
 
+        //initialize render frame
+        Render rend(320,200);   //arguments do nothing for now. 320,200 is hardcoded into "gui/render.h"
+
     printf("Initializing Hardware, Stage 2\n");
     drvManager.ActivateAll();
 
@@ -189,6 +193,11 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     interrupts.Activate();
 
     while(1){
-        desktop.Draw(&vga);
+
+        //render new frame
+        desktop.Draw(&rend);
+
+        //display rendered frame
+        rend.display(&vga);
     }
 }
