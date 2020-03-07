@@ -66,7 +66,7 @@ namespace myos{
             //destructor
             ~TaskManager();
             bool AddTask(Task* task);
-            CPUState* Schedule(CPUstate* cpustate);
+            CPUState* Schedule(CPUState* cpustate);
     };
 }
 

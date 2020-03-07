@@ -12,7 +12,7 @@
 #include <multitasking.h>
 
 
-#define GRAPHICSMODE
+// #define GRAPHICSMODE
 
 using namespace myos;
 using namespace myos::common;

@@ -69,8 +69,8 @@ using namespace myos::common;
             return true;
         }
 
-        CPUState* TaskManager::Schedule(CPUstate* cpustate){
-            
+        CPUState* TaskManager::Schedule(CPUState* cpustate){
+
             if(numTasks <= 0){
                 return cpustate;    //resume previous task
             }
