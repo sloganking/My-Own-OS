@@ -57,13 +57,30 @@ void printf(char* str){
         //if reached bottom of screen, clear whole screen
         if(y >= 25){
             //set whole screen to space character
-            for(y = 0; y < 25; y++){
-                for(x = 0; x < 80; x++){
-                    putCharAt(' ',x,y);
-                }
-            }
-            x=0;
-            y=0;
+                // for(y = 0; y < 25; y++){
+                //     for(x = 0; x < 80; x++){
+                //         putCharAt(' ',x,y);
+                //     }
+                // }
+                // x=0;
+                // y=0;
+
+            //move all lines up by one
+                //move lines up
+                    for(y = 1; y < 25; y++){
+                        for(x = 0; x < 80; x++){
+                            uint16_t tempChar = VideoMemory[80*y+x];
+                            VideoMemory[(80*(y-1))+x] = VideoMemory[(80*y)+x];
+                        }
+                    }
+                //clear last line
+                    y = 24;
+                    for(x = 0; x < 80; x++){
+                        putCharAt(' ',x,y);
+                    }
+                    
+                x = 0;
+                y = 24;
         }
     }
 }
