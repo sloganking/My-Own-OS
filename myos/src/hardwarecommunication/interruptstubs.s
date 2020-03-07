@@ -63,12 +63,6 @@ int_bottom:
     movl %eax, %esp # switch the stack
 
     # recover register values (reverse order from pushing due to how stored on stack)
-        ; popl %gs
-        ; popl %fs
-        ; popl %es
-        ; popl %ds
-        ; popa
-
         popl %eax
         popl %ebx
         popl %ecx
@@ -77,6 +71,12 @@ int_bottom:
         popl %esi
         popl %edi
         popl %ebp
+
+        ; popl %gs
+        ; popl %fs
+        ; popl %es
+        ; popl %ds
+        ; popa
 
     add $4, %esp    # POP error field
 
