@@ -18,7 +18,13 @@ using namespace myos::drivers;
 using namespace myos::hardwarecommunication;
 using namespace myos::gui;
 
+void putCharAt(char chr, uint8_t x, uint8_t y){
+    // pointer to memory location
+    // GPU will auto display characters stored at 0xb8000
+    uint16_t* VideoMemory = (uint16_t*)0xb8000;
 
+    VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | chr;
+}
 
 //screen 80 chars wide and 25 high
 void printf(char* str){
@@ -37,7 +43,7 @@ void printf(char* str){
                 x = 0;
                 break;
             default:
-                VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | str[i];
+                putCharAt(str[i],x,y);
                 x++;
                 break;
         }
@@ -53,7 +59,7 @@ void printf(char* str){
             //set whole screen to space character
             for(y = 0; y < 25; y++){
                 for(x = 0; x < 80; x++){
-                    VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | ' ';
+                    putCharAt(' ',x,y);
                 }
             }
             x=0;
