@@ -9,7 +9,7 @@ namespace myos{
     struct CPUState{
         
         //we have to manually push these
-        
+
             //general purpose registers
             common::uint32_t eax;
             common::uint32_t ebx;
@@ -20,10 +20,10 @@ namespace myos{
             common::uint32_t edi;   //data index
             common::uint32_t ebp;   //base pointer
 
-            common::uint32_t gs;
-            common::uint32_t fs;
-            common::uint32_t es;
-            common::uint32_t ds;
+            // common::uint32_t gs;
+            // common::uint32_t fs;
+            // common::uint32_t es;
+            // common::uint32_t ds;
 
             common::uint32_t error;
 
