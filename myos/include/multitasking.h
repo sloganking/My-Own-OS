@@ -44,7 +44,7 @@ namespace myos{
             common::uint8_t stack[4096];    
 
             //cpu pushed and user pushed data
-            CPUState* cpustate
+            CPUState* cpustate;
 
         public:
             //constructor

@@ -65,19 +65,22 @@ using namespace myos::common;
             if(numTasks >= 256){
                 return false;
             }
-            task[numTasks++] = task;
+            tasks[numTasks++] = task;
             return true;
         }
 
         CPUState* TaskManager::Schedule(CPUstate* cpustate){
+            
             if(numTasks <= 0){
                 return cpustate;    //resume previous task
             }
+
             if(currentTask >= 0){
 
                 //store old cpu state
                 tasks[currentTask]->cpustate = cpustate;
             }
+
             //round robin scheduling
             //if current task exceeds number of tasks, start over at beginning
             if(++currentTask >= numTasks){

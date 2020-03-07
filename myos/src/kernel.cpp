@@ -9,6 +9,7 @@
 #include <gui/desktop.h>
 #include <gui/window.h>
 #include <gui/render.h>
+#include <multitasking.h>
 
 
 #define GRAPHICSMODE
@@ -128,6 +129,18 @@ public:
     }
 };
 
+void taskA(){
+    while(true){
+        printf("A");
+    }
+}
+
+void taskB(){
+    while(true){
+        printf("B");
+    }
+}
+
 // define what constructor means
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -147,7 +160,14 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     printf("Hello World!\n");
 
     GlobalDescriptorTable gdt;      //initialize Global Descriptor table
-    InterruptManager interrupts(&gdt);  //initialize Interrupt Descriptor table
+
+    TaskManager taskManager;
+    Task task1(&gdt, taskA);
+    Task task2(&gdt, taskB);
+    taskManager.AddTask(&task1);
+    taskManager.AddTask(&task2);
+
+    InterruptManager interrupts(&gdt, &taskManager);  //initialize Interrupt Descriptor table
 
     printf("Initializing Hardware, Stage 1\n");
 
@@ -204,8 +224,11 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     #endif
 
     //tell CPU to allow interrupts
+    //should be the last thing in the kernel
     interrupts.Activate();
 
+
+    //once multitasking has been implemented, this should be moved into a task
     while(1){
         #ifdef GRAPHICSMODE
             //render new frame

@@ -1,5 +1,6 @@
 #include <hardwarecommunication/interrupts.h>
 
+using namespace myos;
 using namespace myos::common;
 using namespace myos::hardwarecommunication;
 
@@ -47,7 +48,7 @@ void InterruptManager::SetInterruptDescriptorTableEntry(
 
 
 //constructor
-InterruptManager::InterruptManager(GlobalDescriptorTable* gdt)
+InterruptManager::InterruptManager(GlobalDescriptorTable* gdt, TaskManager* taskManager)
 
 //instansiate ports, numbers are engrained in hardware
 : picMasterCommand(0x20),
@@ -56,6 +57,7 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt)
   picSlaveData(0xA1)
 
 {
+    this->taskManager = taskManager;
     uint16_t CodeSegment = gdt->CodeSegmentSelector();
     const uint8_t IDT_INTERRUPT_GATE = 0xE;
 
@@ -140,6 +142,12 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t e
         printf("UNHANDLED INTERRUPT 0x");
         printfHex(interruptNumber);
         
+    }
+
+    //if clock interrupt
+    if(interruptNumber == 0x20){
+        //move the stack pointer so that when we ret, a new task will be jumped into
+        esp = (uint32_t)taskManager->Schedule((CPUState*)esp);
     }
 
     //if it's a hardware interrupt
