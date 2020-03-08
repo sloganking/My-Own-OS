@@ -14,10 +14,11 @@
 - Established communicatiion with Peripheral Component Interconnect (PCI) Devices
 - Enabled VGA based graphical environment
 - GUI framework for basic desktop and windows
+- Multitasking
 
 ### Working On
 
-- Multitasking
+- Dynamic Memory Management / Heap
 
 ![](./Assets/demo.gif)
 
