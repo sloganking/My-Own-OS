@@ -9,6 +9,10 @@
 #include <gui/desktop.h>
 #include <gui/window.h>
 #include <gui/render.h>
+#include <multitasking.h>
+
+
+// #define GRAPHICSMODE
 
 using namespace myos;
 using namespace myos::common;
@@ -125,6 +129,18 @@ public:
     }
 };
 
+void taskA(){
+    while(true){
+        printf("A");
+    }
+}
+
+void taskB(){
+    while(true){
+        printf("B");
+    }
+}
+
 // define what constructor means
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -144,24 +160,39 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     printf("Hello World!\n");
 
     GlobalDescriptorTable gdt;      //initialize Global Descriptor table
-    InterruptManager interrupts(&gdt);  //initialize Interrupt Descriptor table
+
+    TaskManager taskManager;
+    Task task1(&gdt, taskA);
+    Task task2(&gdt, taskB);
+    taskManager.AddTask(&task1);
+    taskManager.AddTask(&task2);
+
+    InterruptManager interrupts(&gdt, &taskManager);  //initialize Interrupt Descriptor table
 
     printf("Initializing Hardware, Stage 1\n");
 
-    Desktop desktop(320,200, 0x00,0x00,0xA8);
+    #ifdef GRAPHICSMODE
+        Desktop desktop(320,200, 0x00,0x00,0xA8);
+    #endif
     
     DriverManager drvManager;
 
         //initialize keyboard
-        // PrintfKeyboardEventHandler kbhandler;
-        // KeyboardDriver keyboard(&interrupts, &kbhandler);
-        KeyboardDriver keyboard(&interrupts, &desktop);
+        #ifdef GRAPHICSMODE
+            KeyboardDriver keyboard(&interrupts, &desktop);
+        #else
+            PrintfKeyboardEventHandler kbhandler;
+            KeyboardDriver keyboard(&interrupts, &kbhandler);
+        #endif
         drvManager.AddDriver(&keyboard);
         
         //initialize mouse
-        // MouseToConsole mousehandler;
-        // MouseDriver mouse(&interrupts, &mousehandler);
-        MouseDriver mouse(&interrupts, &desktop);
+        #ifdef GRAPHICSMODE
+            MouseDriver mouse(&interrupts, &desktop);
+        #else
+            MouseToConsole mousehandler;
+            MouseDriver mouse(&interrupts, &mousehandler);
+        #endif
         drvManager.AddDriver(&mouse);
 
         //initialize PCI
@@ -180,24 +211,31 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
 
     printf("Initializing Hardware, Stage 3\n");
 
-    //screen resolution is 320 px wide, 200 px tall, using 8 bit pixel color depth
-    vga.SetMode(320,200,8);
+    #ifdef GRAPHICSMODE
+        //screen resolution is 320 px wide, 200 px tall, using 8 bit pixel color depth
+        vga.SetMode(320,200,8);
 
-    //make new window and attach it to the desktop
-    Window win1(&desktop, 10,10, 20,20, 0xA8,0x00,0x00);
-    desktop.AddChild(&win1);
-    Window win2(&desktop, 40,15, 30,30, 0x00,0xA8,0x00);
-    desktop.AddChild(&win2);
+        //make new window and attach it to the desktop
+        Window win1(&desktop, 10,10, 20,20, 0xA8,0x00,0x00);
+        desktop.AddChild(&win1);
+
+        Window win2(&desktop, 40,15, 30,30, 0x00,0xA8,0x00);
+        desktop.AddChild(&win2);
+    #endif
 
     //tell CPU to allow interrupts
+    //should be the last thing in the kernel
     interrupts.Activate();
 
+
+    //once multitasking has been implemented, this should be moved into a task
     while(1){
+        #ifdef GRAPHICSMODE
+            //render new frame
+            desktop.Draw(&rend);
 
-        //render new frame
-        desktop.Draw(&rend);
-
-        //display rendered frame
-        rend.display(&vga);
+            //display rendered frame
+            rend.display(&vga);
+        #endif
     }
 }
