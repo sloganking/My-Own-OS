@@ -33,11 +33,11 @@ handleInterruptRequest 0x0C
 int_bottom:
 
     # store register values
-        ; pusha
-        ; pushl %ds
-        ; pushl %es
-        ; pushl %fs
-        ; pushl %gs
+        # pusha
+        # pushl %ds
+        # pushl %es
+        # pushl %fs
+        # pushl %gs
 
         pushl %ebp
         pushl %edi
@@ -60,7 +60,7 @@ int_bottom:
     # don't have to do since stame stack pointer is handed back by "interrupt.cpp" handleInterrupt()
 
     # do this instead
-    movl %eax, %esp # switch the stack
+    mov %eax, %esp # switch the stack
 
     # recover register values (reverse order from pushing due to how stored on stack)
         popl %eax
@@ -72,11 +72,11 @@ int_bottom:
         popl %edi
         popl %ebp
 
-        ; popl %gs
-        ; popl %fs
-        ; popl %es
-        ; popl %ds
-        ; popa
+        # popl %gs
+        # popl %fs
+        # popl %es
+        # popl %ds
+        # popa
 
     add $4, %esp    # POP error field
 

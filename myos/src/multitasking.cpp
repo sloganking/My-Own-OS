@@ -1,7 +1,6 @@
 #include <multitasking.h>
 
 using namespace myos;
-
 using namespace myos::common;
 
 // class Task{
