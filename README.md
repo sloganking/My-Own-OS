@@ -49,7 +49,7 @@
 # Possible Issues and Solutions
 
 ## undefined reference to `__stack_chk_fail_local'
-When compiling, GCC may give the error ``gdt.cpp:(.text+0xa2): undefined reference to `__stack_chk_fail_local'``. If this happens, create function ``__stack_chk_fail_local()`` inside the file GCC says it can't find it in. Keep in mind that there should only be one of these functions, so if it's already implemented somewhere else you will have to move it.
+When compiling, GCC may give the error ``gdt.cpp:(.text+0xa2): undefined reference to `__stack_chk_fail_local'``. If this happens, create function ``__stack_chk_fail_local()`` inside the file GCC says it can't find it in. Keep in mind that there can only be one of these functions, so if it's already implemented somewhere else you will have to move it. As of writing this, the ``__stack_chk_fail_local`` function is already written in ``myos/src/gdt.cpp``. If it is ever moved in this repository, you can find it by using github's "search in this repository" feature.
 
 ### Example of implemented function:
 
@@ -58,5 +58,6 @@ uint32_t __stack_chk_fail_local(){
     return 0;
 }
 ```
+
 Further information about this issue has been [discussed in another repository](https://github.com/AlgorithMan-de/wyoos/issues/15)
 
