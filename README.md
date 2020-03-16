@@ -15,10 +15,13 @@
 - Enabled VGA based graphical environment
 - GUI framework for basic desktop and windows
 - Multitasking
+- Dynamic Memory Management / Heap
 
 ### Working On
 
-- Dynamic Memory Management / Heap
+- Networking
+- Hard Drives
+- System calls
 
 ![](./Assets/demo.gif)
 
