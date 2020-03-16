@@ -9,19 +9,21 @@ namespace myos{
         MemoryChunk *next;
         MemoryChunk *prev;
         bool allocated;
-        size_t size;
+        common::size_t size;
     };
 
     class MemoryManager{
         protected:
-            MemoryManager* first;
+            MemoryChunk* first;
         public:
             static MemoryManager *activeMemoryManager;
 
-            MemoryManager(size_t first, size_t size);
+            MemoryManager(common::size_t start, common::size_t size);
             ~MemoryManager();
 
-            void* malloc(size_t size);
+            void* malloc(common::size_t size);
             void free(void* ptr);
     };
 }
+
+#endif

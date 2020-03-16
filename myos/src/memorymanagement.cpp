@@ -70,7 +70,7 @@ using namespace myos::common;
                             temp->next->prev = temp;
 
                         }
-                        result->next = temp
+                        result->next = temp;
                 }
 
             //return pointer to newly allocated memory
