@@ -162,10 +162,11 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     GlobalDescriptorTable gdt;      //initialize Global Descriptor table
 
     TaskManager taskManager;
-    Task task1(&gdt, taskA);
-    Task task2(&gdt, taskB);
-    taskManager.AddTask(&task1);
-    taskManager.AddTask(&task2);
+
+    // Task task1(&gdt, taskA);
+    // Task task2(&gdt, taskB);
+    // taskManager.AddTask(&task1);
+    // taskManager.AddTask(&task2);
 
     InterruptManager interrupts(&gdt, &taskManager);  //initialize Interrupt Descriptor table
 
