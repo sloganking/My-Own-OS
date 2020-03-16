@@ -82,7 +82,38 @@ using namespace myos::common;
         }
 
         void MemoryManager::free(void* ptr){
+
+            //point to beginning of MemoryChunk instead of beginning of allocated space
             MemoryChunk* chunk = (MemoryChunk*)((size_t)ptr - sizeof(MemoryChunk));
+
+            //deallocate chunk
+            chunk->allocated = false;
+
+            //merge any neighboring unallocated chunks
+
+                //if the previous chunk is unallocated
+                if(chunk->prev != 0 && !chunk->prev->allocated){
+                    chunk->prev->next = chunk->next;
+                    chunk->prev->size += chunk->size + sizeof(MemoryChunk);
+
+                    //update "previous" pointer of next chunk
+                        if(chunk->next != 0){
+                            chunk->next->prev = chunk->prev;
+                        }
+                    
+                    chunk = chunk->prev;
+                }
+
+                //if the next chunk is unallocated
+                if(chunk->next != 0 && !chunk->next->allocated){
+                    chunk->size += chunk->next->size + sizeof(MemoryChunk);
+                    chunk->next = chunk->next->next;
+
+                    //update "previous" pointer of next chunk
+                    if(chunk->next != 0){
+                        chunk->next->prev = chunk;
+                    }
+                }
         }
 
 
