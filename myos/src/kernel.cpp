@@ -66,11 +66,18 @@ void printf(char* str){
 }
 
 void printfHex(uint8_t key){
-    char* foo = "00 ";
+    char* foo = "00";
     char* hex = "0123456789ABCDF";
     foo[0] = hex[(key >> 4) & 0x0F];
     foo[1] = hex[key & 0x0F];
     printf(foo);
+}
+
+void printfHex32(uint32_t key){
+    printfHex((key >> 24) & 0xFF);
+    printfHex((key >> 16) & 0xFF);
+    printfHex((key >> 8) & 0xFF);
+    printfHex((key) & 0xFF);
 }
 
 class PrintfKeyboardEventHandler : public KeyboardEventHandler{
@@ -158,7 +165,7 @@ extern "C" void callConstructors()
 
 //paramaters are data retrieved from bootloader
 extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
-    printf("Hello World!\n");
+    // printf("Hello World!\n");
 
     GlobalDescriptorTable gdt;      //initialize Global Descriptor table
 
@@ -169,20 +176,22 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
 
     MemoryManager memoryManager(heap, (*memupper)*1024 - heap - 10*1024);
 
-    printf("heap: 0x");
-    printfHex((heap >> 24) & 0xFF);
-    printfHex((heap >> 16) & 0xFF);
-    printfHex((heap >> 8) & 0xFF);
-    printfHex((heap) & 0xFF);
+    // printf("heap: 0x");
+    // printfHex32((uint32_t)heap);
+    // printf("\n");
 
     void* allocated = memoryManager.malloc(1024);
 
-    printf("\nallocated: 0x");
-    printfHex(((size_t)allocated >> 24) & 0xFF);
-    printfHex(((size_t)allocated >> 16) & 0xFF);
-    printfHex(((size_t)allocated >> 8) & 0xFF);
-    printfHex(((size_t)allocated )& 0xFF);
-    printf("\n");
+    void* allocated2 = memoryManager.malloc(1024);
+
+    memoryManager.free(&allocated);
+
+    // memoryManager.free(&allocated2);
+
+    // void* allocated3 = memoryManager.malloc(5);
+
+
+    memoryManager.listChunks();
 
     TaskManager taskManager;
 

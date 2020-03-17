@@ -23,6 +23,10 @@ namespace myos{
 
             void* malloc(common::size_t size);
             void free(void* ptr);
+
+            void printNumChunks();
+
+            void listChunks();
     };
 }
 

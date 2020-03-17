@@ -3,6 +3,10 @@
 using namespace myos;
 using namespace myos::common;
 
+void printf(char* str);
+void printfHex(uint8_t);
+void printfHex32(uint32_t);
+
 // class MemoryManager{
     // protected:
         // MemoryManager* first;
@@ -115,6 +119,30 @@ using namespace myos::common;
                         chunk->next->prev = chunk;
                     }
                 }
+        }
+
+        void MemoryManager::printNumChunks(){
+            uint32_t count = 0;
+            for(MemoryChunk* chunk = first; chunk != 0; chunk = chunk->next){
+                count++;
+            }
+            printfHex32(count);
+        }
+
+        void MemoryManager::listChunks(){
+            uint32_t count = 0;
+            for(MemoryChunk* chunk = first; chunk != 0; chunk = chunk->next){
+                printf("Chunk# "); printfHex32(count); printf("\n");
+                printf("ChunkLoc: "); printfHex32((uint32_t)chunk); printf("\n");
+                printf("prev: "); printfHex32((uint32_t)chunk->prev); printf("\n");
+                printf("next: "); printfHex32((uint32_t)chunk->next); printf("\n");
+                printf("allocated: "); printfHex32((uint32_t)chunk->allocated); printf("\n");
+                printf("size: "); printfHex32((uint32_t)chunk->size); printf("\n");
+                printf("\n");
+
+                //keep at end of loop
+                count++;
+            }
         }
 
 
