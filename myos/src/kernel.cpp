@@ -67,7 +67,7 @@ void printf(char* str){
 
 void printfHex(uint8_t key){
     char* foo = "00";
-    char* hex = "0123456789ABCDF";
+    char* hex = "0123456789ABCDEF";
     foo[0] = hex[(key >> 4) & 0x0F];
     foo[1] = hex[key & 0x0F];
     printf(foo);
@@ -182,14 +182,9 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
 
     void* allocated = memoryManager.malloc(1024);
 
-    void* allocated2 = memoryManager.malloc(1024);
+    void* allocated2 = memoryManager.malloc(255);//239
 
-    memoryManager.free(&allocated);
-
-    // memoryManager.free(&allocated2);
-
-    // void* allocated3 = memoryManager.malloc(5);
-
+    memoryManager.free(allocated);
 
     memoryManager.listChunks();
 
