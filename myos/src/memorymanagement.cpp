@@ -61,6 +61,7 @@ using namespace myos::common;
                         MemoryChunk* temp = (MemoryChunk*)((size_t)result + sizeof(MemoryChunk) + size);
                         temp->allocated = false;
                         temp->size = result->size - size - sizeof(MemoryChunk);
+                        temp->prev = result;
 
                     //modify pointers
                         temp->next = result->next;
