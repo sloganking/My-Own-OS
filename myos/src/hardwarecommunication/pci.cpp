@@ -106,24 +106,24 @@ void PeripheralComponentInterconnectController::SelectDrivers(myos::drivers::Dri
                     }
                 }
 
-                printf("PCI BUS ");
-                printfHex(bus & 0xFF);
+                // printf("PCI BUS ");
+                // printfHex(bus & 0xFF);
 
-                printf(", DEVICE ");
-                printfHex(device & 0xFF);
+                // printf(", DEVICE ");
+                // printfHex(device & 0xFF);
 
-                printf(", FUNCTION ");
-                printfHex(function & 0xFF);
+                // printf(", FUNCTION ");
+                // printfHex(function & 0xFF);
 
-                printf("= VENDOR ");
-                printfHex((dev.vendor_id & 0xFF00) >> 8);
-                printfHex(dev.vendor_id & 0xFF);
+                // printf("= VENDOR ");
+                // printfHex((dev.vendor_id & 0xFF00) >> 8);
+                // printfHex(dev.vendor_id & 0xFF);
 
-                printf(", DEVICE ");
-                printfHex((dev.device_id & 0xFF00) >> 8);
-                printfHex(dev.device_id & 0xFF);
+                // printf(", DEVICE ");
+                // printfHex((dev.device_id & 0xFF00) >> 8);
+                // printfHex(dev.device_id & 0xFF);
 
-                printf("\n");
+                // printf("\n");
 
             }
         }
