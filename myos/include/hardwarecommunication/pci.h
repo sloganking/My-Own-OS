@@ -5,9 +5,9 @@
 #include <drivers/driver.h>
 #include <hardwarecommunication/port.h>
 #include <hardwarecommunication/interrupts.h>
-#include <drivers/amd_am79c973.h>
 
 #include <memorymanagement.h>
+#include <drivers/amd_am79c973.h>
 
 namespace myos{
     namespace hardwarecommunication{

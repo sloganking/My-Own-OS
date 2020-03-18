@@ -7,55 +7,9 @@ using namespace myos::hardwarecommunication;
 
 void printf(char*);
 
-// struct InitializationBlock{
-//     common::uint16_t mode;
-
-//     //4 reserved bits
-//     unsigned reserved1 : 4;
-
-//     // number of receive and send buffers
-//     unsigned numSendBuffers : 4;
-//     unsigned reserved2 : 4;
-//     unsigned numRecvBuffers : 4;
-
-//     common::uint64_t physicalAddress : 48;  //MAC Address
-//     common::uint16_t reserved3;
-//     common::uint64_t logicalAddress;    // ??? might be IP address
-//     common::uint32_t recvBufferDescrAddress;
-//     common::uint32_t sendBufferDescrAddress;
-
-// ======================================
-
-// };  __attribute__((packed));
-
-// struct BufferDescriptor{
-//     common::uint32_t address;
-//     common::uint32_t flags;
-//     common::uint32_t flags2;
-//     common::uint32_t avail;
-
-// }; __attribute__((packed));
-
-// ======================================
-
-// InitializationBlock initBlock;
-
-// BufferDescriptor* sendBufferDescr;
-// common::uint8_t sendBufferDescrMemory[2048 + 15];
-// //8 buffers of size 2KB plus 15 for allignment
-// common::uint8_t sendBuffers[2*1024+15][8];
-// common::uint8_t currentSendBuffer;
-
-// BufferDescriptor* recvBufferDescr;
-// common::uint8_t recvBufferDescrMemory[2048 + 15];
-// common::uint8_t recvBuffers[2*1024+15][8];
-// common::uint8_t currentRecvBuffer;
-
-
-
-amd_am79c973::amd_am79c973(hardwarecommunication::PeripheralComponentInterconnectDeviceDescriptor *dev, hardwarecommunication::InterruptManager* interrupts)
+amd_am79c973::amd_am79c973(PeripheralComponentInterconnectDeviceDescriptor *dev, InterruptManager* interrupts)
 :   Driver(),
-    InterruptHandler(interrupts, dev->interrupt + 20),
+    InterruptHandler(dev->interrupt + 20, interrupts),
 
     MACAddress0Port(dev->portBase),
     MACAddress2Port(dev->portBase + 0x2),
@@ -69,19 +23,19 @@ amd_am79c973::amd_am79c973(hardwarecommunication::PeripheralComponentInterconnec
     currentSendBuffer = 0;
     currentRecvBuffer = 0;
 
-    uint8_t MAC0 = MACAddress0Port.Read % 256;
-    uint8_t MAC1 = MACAddress0Port.Read / 256;
-    uint8_t MAC2 = MACAddress2Port.Read % 256;
-    uint8_t MAC3 = MACAddress2Port.Read / 256;
-    uint8_t MAC4 = MACAddress4Port.Read % 256;
-    uint8_t MAC5 = MACAddress4Port.Read / 256;
+    uint64_t MAC0 = MACAddress0Port.Read() % 256;
+    uint64_t MAC1 = MACAddress0Port.Read() / 256;
+    uint64_t MAC2 = MACAddress2Port.Read() % 256;
+    uint64_t MAC3 = MACAddress2Port.Read() / 256;
+    uint64_t MAC4 = MACAddress4Port.Read() % 256;
+    uint64_t MAC5 = MACAddress4Port.Read() / 256;
 
     uint64_t MAC = MAC5 << 40
                     | MAC4 << 32
                     | MAC3 << 24
                     | MAC2 << 16
                     | MAC1 << 8
-                    | MAC0
+                    | MAC0;
 
     //set device to 32bit mode
 
@@ -104,10 +58,10 @@ amd_am79c973::amd_am79c973(hardwarecommunication::PeripheralComponentInterconnec
         initBlock.logicalAddress = 0;
 
         //select memory for descriptors
-            sendBufferDescr = (BufferDescriptor*)((((uint32_t)(&sendBufferDescrMemory[0]) + 15) & ~((uint32_t)0xF));
+            sendBufferDescr = (BufferDescriptor*)((((uint32_t)&sendBufferDescrMemory[0]) + 15) & ~((uint32_t)0xF));
             initBlock.sendBufferDescrAddress = (uint32_t)sendBufferDescr;
 
-            recvBufferDescr = (BufferDescriptor*)((((uint32_t)(&recvBufferDescrMemory[0]) + 15) & ~((uint32_t)0xF));
+            recvBufferDescr = (BufferDescriptor*)((((uint32_t)&recvBufferDescrMemory[0]) + 15) & ~((uint32_t)0xF));
             initBlock.recvBufferDescrAddress = (uint32_t)recvBufferDescr;
 
         //set descriptors
@@ -145,6 +99,17 @@ amd_am79c973::~amd_am79c973(){
 
 void amd_am79c973::Activate(){
 
+    //enables interrupts?
+        registerAddressPort.Write(0);
+        registerDataPort.Write(0x41);
+
+        registerAddressPort.Write(4);
+        uint32_t temp = registerDataPort.Read();
+        registerAddressPort.Write(4);
+        registerDataPort.Write(temp | 0xC00);
+
+        registerAddressPort.Write(0);
+        registerDataPort.Write(0x42);
 }
 
 int amd_am79c973::Reset(){
@@ -156,5 +121,22 @@ int amd_am79c973::Reset(){
 }
 
 uint32_t amd_am79c973::HandleInterrupt(uint32_t esp){
-    printf("INTERRUPT FROM AMD am79c973\n")
+    printf("INTERRUPT FROM AMD am79c973\n");
+
+    registerAddressPort.Write(0);
+    uint32_t temp = registerDataPort.Read();
+
+    if((temp & 0x8000) == 0x8000) printf("AMD am79c973 ERROR\n");
+    if((temp & 0x2000) == 0x2000) printf("AMD am79c973 COLLISION ERROR\n");
+    if((temp & 0x1000) == 0x1000) printf("AMD am79c973 MISSED FRAME\n");  //received data faster than could handle
+    if((temp & 0x0800) == 0x0800) printf("AMD am79c973 MEMORY ERROR\n");
+    if((temp & 0x0400) == 0x0400) printf("AMD am79c973 DATA RECEIVED\n");
+    if((temp & 0x200) == 0x200) printf("AMD am79c973 DATA SENT\n");
+
+    //acknowledge
+        registerAddressPort.Write(0);
+        registerDataPort.Write(temp);
+
+    if((temp & 0x100) == 0x100) printf("AMD am79c973 INIT DONE\n");
+
 }

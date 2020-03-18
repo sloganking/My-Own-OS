@@ -65,7 +65,7 @@ namespace myos{
                 common::uint8_t currentRecvBuffer;
 
             public:
-                amd_am79c973(hardwarecommunication::PeripheralComponentInterconnectDeviceDescriptor dev, hardwarecommunication::InterruptManager* interrupts);
+                amd_am79c973(hardwarecommunication::PeripheralComponentInterconnectDeviceDescriptor *dev, hardwarecommunication::InterruptManager* interrupts);
                 ~amd_am79c973();
 
                 void Activate();

@@ -1,4 +1,5 @@
 #include <hardwarecommunication/pci.h>
+#include <drivers/amd_am79c973.h>
 
 using namespace myos::common;
 using namespace myos::drivers;
@@ -96,14 +97,14 @@ void PeripheralComponentInterconnectController::SelectDrivers(myos::drivers::Dri
                     if(bar.address && (bar.type == InputOutput)){
                         dev.portBase = (uint32_t)bar.address;
                     }
+                }
 
-                    //grab driver for device and connect it to the interrupt manager
-                    Driver* driver = GetDriver(dev, interrupts);
+                //grab driver for device and connect it to the interrupt manager
+                Driver* driver = GetDriver(dev, interrupts);
 
-                    //if there was a driver, add it to the driver manager.
-                    if(driver != 0){
-                        driverManager->AddDriver(driver);
-                    }
+                //if there was a driver, add it to the driver manager.
+                if(driver != 0){
+                    driverManager->AddDriver(driver);
                 }
 
                 // printf("PCI BUS ");
