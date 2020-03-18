@@ -178,11 +178,17 @@ BaseAddressRegister PeripheralComponentInterconnectController::GetBaseAddressReg
 Driver* PeripheralComponentInterconnectController::GetDriver(PeripheralComponentInterconnectDeviceDescriptor dev, InterruptManager* interrupts){
     //normally one might store a list of drivers on a HDD and retrieve the desired one. Since we don't yet have HDD access as of writing this, I will hard code the drivers into the kernel
 
+    Driver* driver = 0;
     switch(dev.vendor_id){
         case 0x1022:    //AMD
             switch(dev.device_id){
                 case 0x2000:    //am79c973
-                    break;
+                    printf("amd_am79c973");
+                    driver = (Driver*)MemoryManager::activeMemoryManager->malloc(sizeof(amd_am79c973));
+                    if(driver != 0){
+                        new (driver) amd_am79c973(&dev, interrupts);
+                    }
+                break;
             }
         break;
 
@@ -200,7 +206,7 @@ Driver* PeripheralComponentInterconnectController::GetDriver(PeripheralComponent
         break;
     }
 
-    return 0;
+    return driver;
 }
 
 PeripheralComponentInterconnectDeviceDescriptor PeripheralComponentInterconnectController::GetDeviceDescriptor(uint16_t bus, uint16_t device, uint16_t function){
