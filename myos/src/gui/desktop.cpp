@@ -5,14 +5,14 @@ using namespace common;
 using namespace gui;
 
 
-//class Desktop
+//>class Desktop
 
-    //protected:
-    
+    //>protected:
+
         uint32_t MouseX;
         uint32_t MouseY;
-    
-    //public:
+
+    //<>public:
 
         //constructor
         Desktop::Desktop(
@@ -64,7 +64,7 @@ using namespace gui;
             x /= 4;
             y /= 4;
 
-            //make sure mouse stays inside desktop screen
+            //>make sure mouse stays inside desktop screen
 
                 //calculate new x coord
                 int32_t newMouseX = MouseX + x;
@@ -75,6 +75,7 @@ using namespace gui;
                 int32_t newMouseY = MouseY + y;
                 if(newMouseY < 0) newMouseY = 0;
                 if(newMouseY >= h) newMouseY = h - 1;
+            //<
 
             //pass on movment to CompositeWidget
             CompositeWidget::OnMouseMove(MouseX, MouseY, newMouseX, newMouseY);
@@ -83,3 +84,5 @@ using namespace gui;
             MouseX = newMouseX;
             MouseY = newMouseY;
         }
+    //<
+//<

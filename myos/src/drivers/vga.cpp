@@ -29,11 +29,11 @@ VideoGraphicsArray::~VideoGraphicsArray(){
 //sends initialization codes to corresponding ports
 void VideoGraphicsArray::WriteRegisters(uint8_t* registers){
 
-    //misc
+    //>misc
         //write byte to miscPort and then increase pointer by 1. 
         miscPort.Write(*(registers++));
 
-    //sequencer
+    //<>sequencer
         for(uint8_t i = 0; i < 5; i++){
 
             //where do you want to write data
@@ -43,7 +43,7 @@ void VideoGraphicsArray::WriteRegisters(uint8_t* registers){
             sequencerDataPort.Write(*(registers++));
         }
 
-    //cathode ray tube controller
+    //<>cathode ray tube controller
 
         //unlock, send data, lock it again
         //security measure since CRTs can blow up
@@ -55,7 +55,7 @@ void VideoGraphicsArray::WriteRegisters(uint8_t* registers){
 
         registers[0x03] = registers[0x03] | 0x80;
         registers[0x11] = registers[0x11] & ~0x80;
-        
+
         for(uint8_t i = 0; i < 25; i++){
 
             //where do you want to write data
@@ -65,7 +65,7 @@ void VideoGraphicsArray::WriteRegisters(uint8_t* registers){
             crtcDataPort.Write(*(registers++));
         }
 
-    //graphics controller
+    //<>graphics controller
         for(uint8_t i = 0; i < 9; i++){
 
             //where do you want to write data
@@ -75,7 +75,7 @@ void VideoGraphicsArray::WriteRegisters(uint8_t* registers){
             graphicsControllerDataPort.Write(*(registers++));
         }
 
-    //attributeController
+    //<>attributeController
         for(uint8_t i = 0; i < 21; i++){
 
             //must reset attributeController before sending data
@@ -89,6 +89,7 @@ void VideoGraphicsArray::WriteRegisters(uint8_t* registers){
         }
         attributeControllerResetPort.Read();
         attributeControllerIndexPort.Write(0x20);
+    //<
 }
 
 bool VideoGraphicsArray::SupportsMode(uint32_t width, uint32_t height, uint32_t colordepth){
@@ -130,7 +131,7 @@ uint8_t* VideoGraphicsArray::GetFrameBufferSegment(){
 
     //only interested in bits 3-4
     uint8_t segmentNumber = (graphicsControllerDataPort.Read() >> 2) & 0x03;
-    
+
     switch(segmentNumber){
         default:
         case 0: return (uint8_t*)0x00000;

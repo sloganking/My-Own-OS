@@ -3,9 +3,9 @@
 using namespace myos;
 using namespace myos::common;
 
-// class Task{
+//> class Task{
 
-    // public:
+    //> public:
 
         //constructor
         Task::Task(GlobalDescriptorTable *gdt, void entrypoint()){
@@ -30,9 +30,10 @@ using namespace myos::common;
 
             // cpustate -> error = 0;
 
-            //only has to do with userspace and different security levels
+            //>only has to do with userspace and different security levels
                 // cpustate -> esp = ;
                 // cpustate -> ss = 0;
+            //<
 
             cpustate -> eip = (uint32_t)entrypoint;
             cpustate -> cs = gdt->CodeSegmentSelector();
@@ -44,10 +45,11 @@ using namespace myos::common;
         Task::~Task(){
 
         }
+    //<
 
-// class TaskManager{
+//<> class TaskManager{
 
-    // public:
+    //> public:
 
         //constructor
         TaskManager::TaskManager(){
@@ -87,3 +89,5 @@ using namespace myos::common;
             }
             return tasks[currentTask]->cpustate;
         }
+    //<
+//<

@@ -5,18 +5,19 @@ using namespace common;
 using namespace gui;
 
 
-// class Pixel{
-    // public:
+//> class Pixel{
+    //> public:
         // uint8_t r,
         // uint8_t g,
         // uint8_t b
+    //<
 
 
-// class Render : public myos::drivers::VideoGraphicsArray{
-    // private:
+//<> class Render : public myos::drivers::VideoGraphicsArray{
+    //> private:
         // Pixel[][] pixels;
 
-    // public:
+    //<> public:
 
         //constructor
         Render::Render(
@@ -44,3 +45,5 @@ using namespace gui;
             pixels[x][y].g = g;
             pixels[x][y].b = b;
         }
+    //<
+//<

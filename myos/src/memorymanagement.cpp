@@ -7,10 +7,10 @@ void printf(char* str);
 void printfHex(uint8_t);
 void printfHex32(uint32_t);
 
-// class MemoryManager{
-    // protected:
+//> class MemoryManager{
+    //> protected:
         // MemoryManager* first;
-    // public:
+    //<> public:
         MemoryManager* MemoryManager::activeMemoryManager = 0;
 
         //constructor
@@ -39,7 +39,7 @@ void printfHex32(uint32_t);
 
         void* MemoryManager::malloc(size_t size){
 
-            //find first memory chunk with enough space
+            //>find first memory chunk with enough space
                 MemoryChunk* result = 0;
 
                 //loop through linked list
@@ -51,23 +51,23 @@ void printfHex32(uint32_t);
                     }
                 }
 
-            //if no chunk found, return 0
+            //<>if no chunk found, return 0
                 if(result == 0){
                     return 0;
                 }
 
-            //if there's enough space for an additional MemoryChunk after allocation
+            //<>if there's enough space for an additional MemoryChunk after allocation
 
                 //+1 is to ensure data can be stored after the MemoryChunk header
                 if(result->size >= size + sizeof(MemoryChunk) + 1){
 
-                    //create unallocated MemoryChunk after the newly allocated one
+                    //>create unallocated MemoryChunk after the newly allocated one
                         MemoryChunk* temp = (MemoryChunk*)((size_t)result + sizeof(MemoryChunk) + size);
                         temp->allocated = false;
                         temp->size = result->size - size - sizeof(MemoryChunk);
                         temp->prev = result;
 
-                    //modify pointers
+                    //<>modify pointers
                         temp->next = result->next;
                         if(temp->next != 0){
 
@@ -76,14 +76,16 @@ void printfHex32(uint32_t);
 
                         }
                         result->next = temp;
+                    //<
                 }
 
-            //return pointer to newly allocated memory
+            //<>return pointer to newly allocated memory
                 result->size = size;
                 result->allocated = true;
-                
+
                 //return pointer to beginning of allocated memory
                 return (void*)(((size_t)result) + sizeof(MemoryChunk));
+            //<
         }
 
         void MemoryManager::free(void* ptr){
@@ -94,18 +96,19 @@ void printfHex32(uint32_t);
             //deallocate chunk
             chunk->allocated = false;
 
-            //merge any neighboring unallocated chunks
+            //>merge any neighboring unallocated chunks
 
                 //if the previous chunk is unallocated
                 if(chunk->prev != 0 && !chunk->prev->allocated){
                     chunk->prev->next = chunk->next;
                     chunk->prev->size += chunk->size + sizeof(MemoryChunk);
 
-                    //update "previous" pointer of next chunk
+                    //>update "previous" pointer of next chunk
                         if(chunk->next != 0){
                             chunk->next->prev = chunk->prev;
                         }
-                    
+                    //<
+
                     chunk = chunk->prev;
                 }
 
@@ -119,6 +122,7 @@ void printfHex32(uint32_t);
                         chunk->next->prev = chunk;
                     }
                 }
+            //<
         }
 
         void MemoryManager::printNumChunks(){
@@ -144,6 +148,8 @@ void printfHex32(uint32_t);
                 count++;
             }
         }
+    //<
+//<
 
 
 void* operator new(unsigned size){
@@ -160,7 +166,7 @@ void* operator new[](unsigned size){
     return myos::MemoryManager::activeMemoryManager->malloc(size);
 }
 
-//placement new
+//>placement new
     void* operator new(unsigned size, void* ptr){
         return ptr;
     }
@@ -168,6 +174,7 @@ void* operator new[](unsigned size){
     void* operator new[](unsigned size, void* ptr){
         return ptr;
     }
+//<
 
 void operator delete(void* ptr){
     if(myos::MemoryManager::activeMemoryManager != 0){

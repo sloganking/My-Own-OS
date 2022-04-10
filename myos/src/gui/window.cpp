@@ -3,7 +3,7 @@
 using namespace myos::common;
 using namespace myos::gui;
 
-//class Window
+//>class Window
     //constructor
     Window::Window(Widget* parent, 
         common::int32_t x, common::int32_t y, common::int32_t w, common::int32_t h, 
@@ -40,3 +40,4 @@ using namespace myos::gui;
         }
         CompositeWidget::OnMouseMove(oldx,oldy,newx,newy);
     }
+//<

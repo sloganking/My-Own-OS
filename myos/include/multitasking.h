@@ -7,8 +7,8 @@
 namespace myos{
 
     struct CPUState{
-        
-        //we have to manually push these
+
+        //>we have to manually push these
 
             //general purpose registers
             common::uint32_t eax;
@@ -27,12 +27,13 @@ namespace myos{
 
             common::uint32_t error;
 
-        //automatically pushed by the processor
+        //<>automatically pushed by the processor
             common::uint32_t eip;   //instruction pointer
             common::uint32_t cs;    //code segment
             common::uint32_t eflags;    //flags
             common::uint32_t esp;   //stack pointer
             common::uint32_t ss;    //stack segment
+        //<
 
     } __attribute__((packed));
 

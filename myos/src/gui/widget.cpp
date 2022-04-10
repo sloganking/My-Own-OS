@@ -3,7 +3,7 @@
 using namespace myos::common;
 using namespace myos::gui;
 
-//class Widget
+//>class Widget
 
     //constructor
     Widget::Widget(
@@ -90,7 +90,7 @@ using namespace myos::gui;
 
     }
 
-//class CompositeWidget
+//<>class CompositeWidget
 
     //constructor
     CompositeWidget::CompositeWidget(
@@ -161,7 +161,7 @@ using namespace myos::gui;
     }
 
     void CompositeWidget::OnMouseMove(int32_t oldx,  int32_t oldy, int32_t newx,  int32_t newy){
-        
+
         int firstChild = -1;
 
         //for object that contains old coordinate
@@ -204,3 +204,4 @@ using namespace myos::gui;
             focussedChild->OnKeyUp(str);
         }
     }
+//<

@@ -202,7 +202,7 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
     #ifdef GRAPHICSMODE
         Desktop desktop(320,200, 0x00,0x00,0xA8);
     #endif
-    
+
     DriverManager drvManager;
 
         //initialize keyboard
@@ -213,7 +213,7 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber){
             KeyboardDriver keyboard(&interrupts, &kbhandler);
         #endif
         drvManager.AddDriver(&keyboard);
-        
+
         //initialize mouse
         #ifdef GRAPHICSMODE
             MouseDriver mouse(&interrupts, &desktop);

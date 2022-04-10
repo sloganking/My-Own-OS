@@ -20,7 +20,7 @@ InterruptHandler::~InterruptHandler(){
         interruptManager->handlers[interruptNumber] = 0;
     }
 }
-    
+
 uint32_t InterruptHandler::HandleInterrupt(uint32_t esp){
     return esp;
 }
@@ -103,7 +103,7 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt, TaskManager* task
 
 //descructor
 InterruptManager::~InterruptManager(){
-    
+
 }
 
 void InterruptManager::Activate(){
@@ -141,7 +141,7 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t e
         //print number of interrupt we didn't handle
         printf("UNHANDLED INTERRUPT 0x");
         printfHex(interruptNumber);
-        
+
     }
 
     //if clock interrupt

@@ -60,7 +60,7 @@ void MouseDriver::Activate(){
 }
 
 uint32_t MouseDriver::HandleInterrupt(uint32_t esp){
-    
+
     uint8_t status = commandport.Read();
     if(!(status & 0x20)){   //if (there is no data) or (no mousehandler) then just return without doing anything
         return esp;
@@ -84,7 +84,7 @@ uint32_t MouseDriver::HandleInterrupt(uint32_t esp){
             handler->OnMouseMove((int8_t)buffer[1], -((int8_t)buffer[2]));
         }
 
-        
+
         for(uint8_t i = 0; i < 3; i++){
             //if buttons are different from last buttons
             if((buffer[0] & (0x01 << i)) != (buttons & (0x01<<i))){

@@ -10,7 +10,7 @@ namespace myos{
             protected:
                 common::uint32_t MouseX;
                 common::uint32_t MouseY;
-                
+
             public:
                 Desktop(
                     common::int32_t w, common::int32_t h,
